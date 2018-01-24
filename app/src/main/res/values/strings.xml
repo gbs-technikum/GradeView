@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GradeView</string>
+    <string name="FachHinzufügen">Fach Hinzufügen</string>
 </resources>
