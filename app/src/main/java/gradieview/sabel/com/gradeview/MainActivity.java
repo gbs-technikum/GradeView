@@ -18,15 +18,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         menuItem = findViewById(R.id.faecherHinzufuegen);
 
-        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(MainActivity.this, FaecherAuswahl.class);
-                startActivity(intent);
-                return true;
-            }
-        });
-    }
+        //menuItem.getItemId();
+
+
+
+        }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,5 +34,14 @@ public class MainActivity extends AppCompatActivity {
        return true;
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.faecherHinzufuegen:
+                Intent intent = new Intent(this, FaecherAuswahl.class);
+                this.startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
