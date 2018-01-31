@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">GradeView</string>
-    <string name="FachHinzufügen">Fach Hinzufügen</string>
+    <string name="fachHinzufuegen">Fach Hinzufügen</string>
+    <string name="deutsch">Deutsch</string>
+    <string name="mathe">Mathe</string>
+    <string name="englisch">Englisch</string>
+    <string name="netzwerktechnik">Netzwerktechnik</string>
+    <string name="itil">ITIL</string>
+    <string name="datenbanken">Datenbanken</string>
+    <string name="programmieren">Programmieren</string>
+    <string name="betriebspsychologie">Betriebspsychologie</string>
+    <string name="andwendungsentwicklung">Anwendungsentwicklung</string>
+    <string name="softwaretechnik">Softwaretechnik</string>
+    <string name="betriebswirtschaftlicheProzesse">Betriebswirtschaftliche Prozesse</string>
+    <string name="projektmanagement">Projektmanagement</string>
+    <string name="internetanwendungen">Internetanwendungen</string>
+    <string name="betriebssysteme">Betriebssysteme</string>
+    <string name="qualitaetsmanagement">Qualitätsmanagement</string>
 </resources>

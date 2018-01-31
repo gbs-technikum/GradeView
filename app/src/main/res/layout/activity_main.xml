@@ -1,22 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="gradieview.sabel.com.gradeview.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_andwendungsentwicklung"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="@string/andwendungsentwicklung"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_betriebspsychologie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/betriebspsychologie"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_betriebssysteme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/betriebssysteme"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_betriebswirtschaftlicheProzesse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/betriebswirtschaftlicheProzesse"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_datenbanken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/datenbanken"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_deutsch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/deutsch"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_englisch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/englisch"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_internetanwendungen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/internetanwendungen"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_itil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/itil"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_mathe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mathe"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_netzwerktechnik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/netzwerktechnik"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/programmieren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/programmieren"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_projektmanagement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/projektmanagement"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_qualitaetsmanagement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/qualitaetsmanagement"
+        android:visibility="gone"
+        />
+    <Button
+        android:id="@+id/btn_softwaretechnik"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/softwaretechnik"
+        android:visibility="gone"
+        />
 
 
 
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
