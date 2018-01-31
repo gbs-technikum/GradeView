@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/fachHinzufuegen"
-        android:title="@string/fachHinzufuegen"
-        app:showAsAction="never" />
-
-    
-
+        android:id="@+id/fertig"
+        android:title="@string/fertig"
+        app:showAsAction="always" />
 
 </menu>
