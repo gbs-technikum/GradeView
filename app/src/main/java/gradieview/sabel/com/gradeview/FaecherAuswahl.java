@@ -34,14 +34,13 @@ public class FaecherAuswahl extends AppCompatActivity {
                 System.out.println(faecher);
             }
         });
-
-        Intent intent = getIntent();
     }
 
     public void speichern(){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent();
         intent.putStringArrayListExtra("listeFaecher", faecher);
-        this.startActivity(intent);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
