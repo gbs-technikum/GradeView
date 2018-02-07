@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, FaecherAuswahl.class);
                 intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
                 setResult(RESULT_OK, intent);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
         }
         return super.onOptionsItemSelected(item);

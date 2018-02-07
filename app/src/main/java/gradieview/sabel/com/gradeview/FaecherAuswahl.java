@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> faecher, ausgewaehlteFaecher, vonMainActivity;
+    private Intent intent;
 
     public FaecherAuswahl() {
         this.faecher = new ArrayList<>();
@@ -32,7 +32,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         setContentView(R.layout.activity_faecher_auswahl);
 
         listView = findViewById(R.id.lv_faecher);
-
+        faecher.add("Mathe");
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, faecher);
 
         listView.setAdapter(arrayAdapter);
@@ -48,7 +48,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     }
 
     public void speichern() {
-        Intent intent = new Intent();
+        this.intent = new Intent();
         intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
         setResult(RESULT_OK, intent);
         finish();
@@ -66,6 +66,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fertig:
                 speichern();
+                startActivityForResult(intent,1);
                 return true;
         }
         return super.onOptionsItemSelected(item);
