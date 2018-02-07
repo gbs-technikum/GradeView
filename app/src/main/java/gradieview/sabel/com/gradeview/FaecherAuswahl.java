@@ -18,7 +18,7 @@ public class FaecherAuswahl extends AppCompatActivity {
 
     private ListView listView;
 
-    private Button btn_mathe;
+//    private Button btn_mathe;
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> faecher, ausgewaehlteFaecher;
 
@@ -34,6 +34,8 @@ public class FaecherAuswahl extends AppCompatActivity {
 
         listView = findViewById(R.id.lv_faecher);
         faecher.add("Mathe");
+        faecher.add("Deutsch");
+        faecher.add("Englisch");
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, faecher);
 
         listView.setAdapter(arrayAdapter);
@@ -41,8 +43,9 @@ public class FaecherAuswahl extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                arrayAdapter.remove(faecher.get(position));
-                ausgewaehlteFaecher.add(faecher.get(position));
+                String fach = faecher.get(position);
+                arrayAdapter.remove(fach);
+                ausgewaehlteFaecher.add(fach);
             }
         });
 //        btn_mathe = findViewById(R.id.btn_mathe);

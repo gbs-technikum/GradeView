@@ -7,19 +7,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn_mathe;
-    private ArrayList<String> faecher;
+//    private Button btn_mathe;
+    private ArrayList<String> ausgewaehlteFaecher;
     private String fach;
     private Intent intent;
+    private ListView listView;
+    private ArrayAdapter<String> arrayAdapter;
 
     public MainActivity() {
-        this.faecher = new ArrayList<>();
+        this.ausgewaehlteFaecher = new ArrayList<>();
         fach = null;
     }
 
@@ -27,25 +30,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listView = findViewById(R.id.lv_faecher);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+        listView.setAdapter(arrayAdapter);
     }
 
-    private String getFach() {
-        System.out.println("getFach");
-        for (String fach : faecher) {
-            this.fach = fach;
-        }
-        System.out.println(fach);
-        return this.fach;
-    }
+//    private String getFach() {
+//        System.out.println("getFach");
+//        for (String fach : ausgewaehlteFaecher) {
+//            this.fach = fach;
+//        }
+//        System.out.println(fach);
+//        return this.fach;
+//    }
 
-    private void buttonsHinzufuegen() {
-        System.out.println("ButtonsHinzufuegen");
-        switch (getFach()) {
-            case "Mathe": {
-                btn_mathe = findViewById(R.id.btn_mathe);
-                btn_mathe.setVisibility(View.VISIBLE);
-            }
+    private void faecherHinzufuegen() {
+
+        for (String fach:ausgewaehlteFaecher
+             ) {
+
+            arrayAdapter.add(fach);
         }
+
+
+//        System.out.println("ButtonsHinzufuegen");
+//        switch (getFach()) {
+//            case "Mathe": {
+//                btn_mathe = findViewById(R.id.btn_mathe);
+//                btn_mathe.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
 
@@ -72,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                faecher = data.getStringArrayListExtra("listeFaecher");
-                System.out.println(faecher);
+                ausgewaehlteFaecher = data.getStringArrayListExtra("listeFaecher");
+                System.out.println(ausgewaehlteFaecher);
                 System.out.println("onActivityResult");
-                buttonsHinzufuegen();
+                faecherHinzufuegen();
             }
         }
     }
