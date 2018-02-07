@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FaecherAuswahl"></activity>
+        <activity android:name=".FaecherAuswahl" />
+        <activity android:name=".FachActivity"></activity>
     </application>
 
 </manifest>
