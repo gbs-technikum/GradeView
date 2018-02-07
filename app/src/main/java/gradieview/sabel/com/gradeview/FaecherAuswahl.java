@@ -7,17 +7,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class FaecherAuswahl extends AppCompatActivity {
 
+    private ListView listView;
+
     private Button btn_mathe;
-    private ArrayList<String> faecher;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> faecher, ausgewaehlteFaecher;
 
     public FaecherAuswahl() {
         this.faecher = new ArrayList<>();
+        this.ausgewaehlteFaecher = new ArrayList<>();
     }
 
     @Override
@@ -25,21 +32,36 @@ public class FaecherAuswahl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faecher_auswahl);
 
-        btn_mathe = findViewById(R.id.btn_mathe);
-        btn_mathe.setOnClickListener(new View.OnClickListener() {
+        listView = findViewById(R.id.lv_faecher);
+        faecher.add("Mathe");
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, faecher);
+
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                faecher.add(btn_mathe.getText().toString());
-                btn_mathe.setVisibility(View.GONE);
-                System.out.println(faecher);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                arrayAdapter.remove(faecher.get(position));
+                ausgewaehlteFaecher.add(faecher.get(position));
             }
         });
+//        btn_mathe = findViewById(R.id.btn_mathe);
+//        btn_mathe.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                faecher.add(btn_mathe.getText().toString());
+//                btn_mathe.setVisibility(View.GONE);
+//                System.out.println(faecher);
+//            }
+//        });
     }
 
     public void speichern(){
         Intent intent = new Intent();
-        intent.putStringArrayListExtra("listeFaecher", faecher);
+        intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
         setResult(RESULT_OK, intent);
+
+
         finish();
     }
 
