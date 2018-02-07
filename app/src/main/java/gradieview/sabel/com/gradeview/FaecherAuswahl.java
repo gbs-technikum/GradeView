@@ -66,7 +66,6 @@ public class FaecherAuswahl extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fertig:
                 speichern();
-                startActivityForResult(intent,1);
                 return true;
         }
         return super.onOptionsItemSelected(item);
