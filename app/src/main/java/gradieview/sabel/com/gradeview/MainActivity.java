@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String fach = ausgewaehlteFaecher.get(position);
                 Intent intent = new Intent(MainActivity.this, FachActivity.class);
                 MainActivity.this.startActivity(intent);
             }
