@@ -31,8 +31,14 @@ public class FaecherAuswahl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faecher_auswahl);
 
+        intent = getIntent();
+        vonMainActivity = intent.getStringArrayListExtra("ausgewaehlteFaecher");
+
+        faecherHinzufuegen();
+        faecherVergleich(vonMainActivity, faecher);
+
         listView = findViewById(R.id.lv_faecher);
-        faecher.add("Mathe");
+//        faecher.add("Mathe");
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, faecher);
 
         listView.setAdapter(arrayAdapter);
@@ -71,33 +77,66 @@ public class FaecherAuswahl extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void faecherVergleich(ArrayList<String> vonMainActivity, ArrayList<String> vonFaecherAuswahl) {
-        System.out.println(vonMainActivity);
-        if (vonMainActivity != null) {
-            for (int i = 0; i < vonMainActivity.size(); i++) {
-                for (int j = 0; j < vonFaecherAuswahl.size(); j++) {
-                    if (!vonMainActivity.get(i).equals(vonFaecherAuswahl.get(j))) {
-                        faecher.add("Mathe");
-                    }
-                }
-
-            }
-        }
+    public void faecherHinzufuegen() {
+        faecher.add("Mathe");
         faecher.add("Deutsch");
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("onActivityResult FaecherAuswahl");
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-
-                vonMainActivity = data.getStringArrayListExtra("ausgewaehlteFaecher");
-                System.out.println(vonMainActivity);
-                faecherVergleich(vonMainActivity, faecher);
-
+    public void faecherVergleich(ArrayList<String> vonMainActivity, ArrayList<String> vonFaecherAuswahl) {
+        System.out.println(vonMainActivity);
+        System.out.println(vonFaecherAuswahl);
+        if (vonMainActivity != null || vonFaecherAuswahl != null) {
+            for (int i = 0; i < vonMainActivity.size(); i++) {
+                System.out.println("äußereSchleife");
+                for (int j = 0; j < vonFaecherAuswahl.size(); j++) {
+                    System.out.println("InnereSchleife");
+                    if (vonMainActivity.get(i).equals(vonFaecherAuswahl.get(j))) {
+                        faecher.remove(j);
+                    }
+                }
             }
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FaecherAuswahl that = (FaecherAuswahl) o;
+
+        if (listView != null ? !listView.equals(that.listView) : that.listView != null)
+            return false;
+        if (arrayAdapter != null ? !arrayAdapter.equals(that.arrayAdapter) : that.arrayAdapter != null)
+            return false;
+        if (faecher != null ? !faecher.equals(that.faecher) : that.faecher != null) return false;
+        if (ausgewaehlteFaecher != null ? !ausgewaehlteFaecher.equals(that.ausgewaehlteFaecher) : that.ausgewaehlteFaecher != null)
+            return false;
+        if (vonMainActivity != null ? !vonMainActivity.equals(that.vonMainActivity) : that.vonMainActivity != null)
+            return false;
+        return intent != null ? intent.equals(that.intent) : that.intent == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = listView != null ? listView.hashCode() : 0;
+        result = 31 * result + (arrayAdapter != null ? arrayAdapter.hashCode() : 0);
+        result = 31 * result + (faecher != null ? faecher.hashCode() : 0);
+        result = 31 * result + (ausgewaehlteFaecher != null ? ausgewaehlteFaecher.hashCode() : 0);
+        result = 31 * result + (vonMainActivity != null ? vonMainActivity.hashCode() : 0);
+        result = 31 * result + (intent != null ? intent.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FaecherAuswahl{" +
+                "listView=" + listView +
+                ", arrayAdapter=" + arrayAdapter +
+                ", faecher=" + faecher +
+                ", ausgewaehlteFaecher=" + ausgewaehlteFaecher +
+                ", vonMainActivity=" + vonMainActivity +
+                ", intent=" + intent +
+                '}';
+    }
 }
