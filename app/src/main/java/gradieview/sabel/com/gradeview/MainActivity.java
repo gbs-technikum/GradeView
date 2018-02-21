@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String ausgewaehltesFach = listView.getItemAtPosition(position).toString();
                 Intent intent = new Intent(MainActivity.this, FachActivity.class);
-                System.out.println(view.getTransitionName());
+                intent.putExtra("fachname", ausgewaehltesFach);
                 MainActivity.this.startActivity(intent);
             }
         });

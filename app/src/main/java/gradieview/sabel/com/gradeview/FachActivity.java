@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 public class FachActivity extends AppCompatActivity {
 
-    private String fachname;
+    private static String fachname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,5 +16,12 @@ public class FachActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fach);
 
         Intent intent = getIntent();
+        fachname = intent.getStringExtra("fachname");
+
+
+    }
+
+    public String getFachname() {
+        return fachname;
     }
 }
