@@ -31,12 +31,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //Todo Test löschen
         ausgewaehlteFaecher.add("Test");
 
+        // ListView
         listView = findViewById(R.id.lv_faecher);
+
+        // String Array der ausgewählten Fächer
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+
+        // Array zur ListView hinzufügen
         listView.setAdapter(arrayAdapter);
 
+
+        // Beim Clicken eines Items der ListView
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -47,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    // Ausgewählte Fächer von FaecherAuswahl.java hinzufügen
     private void faecherHinzufuegen() {
         for (String fach : ausgewaehlteFaecher) {
             arrayAdapter.add(fach);
         }
     }
 
+    // Menü hinzufügen (rechts oben in Leiste)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -60,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Menü unterpunkt "Fächer hinzufügen" Listener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -73,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    // Array Liste von FaecherAuswahl.java mit dem Inhalt der ausgewählten Fächer
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println("onActivityResult MainActivity");

@@ -31,18 +31,27 @@ public class FaecherAuswahl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faecher_auswahl);
 
+        // Intent holen
         intent = getIntent();
+
+        // Array Liste von den Fächern holen, damit diese nicht mehr in der Liste zum hinzufügen der Fächer erscheinen
         vonMainActivity = intent.getStringArrayListExtra("ausgewaehlteFaecher");
 
+        //Todo Alle Fächer noch hinzufügen
+        // Methode zum Fächer hinzufügen
         faecherHinzufuegen();
+        // Fächer werden verglichen, damit nicht alle hinzugefügt werden
         faecherVergleich(vonMainActivity, faecher);
 
+        // List View wird hinzugefügt
         listView = findViewById(R.id.lv_faecher);
 //        faecher.add("Mathe");
+        // String Array der Fächer
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, faecher);
-
+        // Array zur ListView hinzufügen
         listView.setAdapter(arrayAdapter);
 
+        // ausgewählte Facher werden in Array übergeben und aus Liste gelöscht
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -53,6 +62,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         });
     }
 
+    // Array mit ausgewählten Fächern an MainActivity.java übergeben und FaecherAuswahl.java wird geschlossen -> zurück zu MainActivity.java
     public void speichern() {
         this.intent = new Intent();
         intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
@@ -60,6 +70,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         finish();
     }
 
+    // Menü hinzufügen in Leiste oben rechts
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -67,6 +78,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         return true;
     }
 
+    // Menüpunkt Fertig Listener, Methode speichern()
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -77,11 +89,14 @@ public class FaecherAuswahl extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Todo alle Fächer hinzufügen
+    // Fächer werden hinzugefügt
     public void faecherHinzufuegen() {
         faecher.add("Mathe");
         faecher.add("Deutsch");
     }
 
+    // Fächer vergleich damit nicht wieder alle Fächer hinzugefügt werden
     public void faecherVergleich(ArrayList<String> vonMainActivity, ArrayList<String> vonFaecherAuswahl) {
         System.out.println(vonMainActivity);
         System.out.println(vonFaecherAuswahl);
