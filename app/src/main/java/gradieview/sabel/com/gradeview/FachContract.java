@@ -8,17 +8,17 @@ import android.provider.BaseColumns;
 
 public final class FachContract {
 
-    private FachContract(){
+    private FachContract() {
 
     }
 
-    public static class FachEntry implements BaseColumns{
+    public static class FachEntry implements BaseColumns {
 
 
         //Todo evtl. FachActivity anders holen
         private static FachActivity fachActivity = new FachActivity();
 
-        private static String tabellenName =fachActivity.getFachname();
+        private static String tabellenName = fachActivity.getFachname();
 
 
         public static final String TABLE_NAME = tabellenName;

@@ -1,6 +1,8 @@
 package gradieview.sabel.com.gradeview;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
+
 
     public MainActivity() {
         this.ausgewaehlteFaecher = new ArrayList<>();
@@ -55,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+
+
+        //Datenbank erstellen
+        FachDBHelper fachDBHelper = new FachDBHelper(getBaseContext());
+        fachDBHelper.getWritableDatabase();
+
+        SQLiteDatabase db = fachDBHelper.getReadableDatabase();
+
+
 
     }
 

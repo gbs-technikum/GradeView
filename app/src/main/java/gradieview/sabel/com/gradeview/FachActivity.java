@@ -17,8 +17,6 @@ public class FachActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         fachname = intent.getStringExtra("fachname");
-
-
     }
 
     public String getFachname() {
