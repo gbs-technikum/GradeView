@@ -14,16 +14,22 @@ public class FachDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Noten.db";
 
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + FachContract.FachEntry.TABLE_NAME + " (" +
-                    FachContract.FachEntry._ID + " INTEGER PRIMARY KEY," +
-                    FachContract.FachEntry.COLUMN_NAME_TITLE_1 + " INTEGER," +
-                    FachContract.FachEntry.COLUMN_NAME_TITLE_2 + "INTEGER, "+
-                    FachContract.FachEntry.COLUMN_NAME_TITLE_3 + "INTEGER";
+            "CREATE TABLE " +
+//                    FachContract.FachEntry.TABLE_NAME
+                    "Test"
+                    + " (" +
+                    FachContract.FachEntry._ID + " INTEGER PRIMARY KEY, " +
+                    FachContract.FachEntry.COLUMN_NAME_TITLE_1 + " INTEGER, " +
+                    FachContract.FachEntry.COLUMN_NAME_TITLE_2 + " INTEGER, "+
+                    FachContract.FachEntry.COLUMN_NAME_TITLE_3 + " INTEGER)";
 
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + FachContract.FachEntry.TABLE_NAME;
 
-    public FachDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public FachDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -32,6 +38,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
     }
+
+
 }
