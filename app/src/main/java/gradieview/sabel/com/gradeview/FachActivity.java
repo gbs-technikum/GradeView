@@ -1,24 +1,27 @@
 package gradieview.sabel.com.gradeview;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
 
 
 public class FachActivity extends AppCompatActivity {
 
     private static String fachname;
-    private LinearLayout linearLayout;
     private Button button;
     private EditText editText;
+    private TextView txtViewSa;
+    private ArrayList<String> notenSa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,33 +30,51 @@ public class FachActivity extends AppCompatActivity {
         Intent intent = getIntent();
         fachname = intent.getStringExtra("fachname");
 
-        linearLayout = findViewById(R.id.linearLayout);
         button = findViewById(R.id.btnSAplus);
-        button.setOnClickListener(onClick());
+
         editText = findViewById(R.id.editText);
 
-        TextView textView = new TextView(this);
-        textView.setText("new text");
+        txtViewSa = findViewById(R.id.txtViewSa);
 
+        notenSa = new ArrayList<>();
 
-    }
-
-    private View.OnClickListener onClick(){
-        return new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                linearLayout.addView(createNewTextView(editText.getText().toString()));
+                editText.setVisibility(View.VISIBLE);
+                //eigabefeld öffnen
+                editText.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(editText, 0);
             }
-        };
+        });
+
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER) {
+                    String note = editText.getText().toString();
+                    //set text Array
+                    notenSa.add(note);
+                    String temp = "";
+                    for (String s : notenSa) {
+                       temp += " "+s;
+                    }
+                    txtViewSa.setText(temp);
+                    txtViewSa.setVisibility(View.VISIBLE);
+                    editText.setVisibility(View.GONE);
+                    editText.setText("");
+                    //eingabefeld schließen
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
-    private TextView createNewTextView(String text){
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final TextView textView = new TextView(this);
-        textView.setLayoutParams(lparams);
-        textView.setText(text);
-        return textView;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -68,4 +89,6 @@ public class FachActivity extends AppCompatActivity {
     public String getFachname() {
         return fachname;
     }
+
+
 }
