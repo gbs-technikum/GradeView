@@ -42,9 +42,6 @@ public class FachDBHelper extends SQLiteOpenHelper {
     }
 
     public void createTable(SQLiteDatabase db, String tabellenname){
-
-
-
         db.execSQL( "CREATE TABLE IF NOT EXISTS " +
                tabellenname
                 + " (" +
@@ -53,6 +50,10 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 FachContract.FachEntry.COLUMN_NAME_TITLE_2 + " INTEGER, "+
                 FachContract.FachEntry.COLUMN_NAME_TITLE_3 + " INTEGER)");
 
+    }
+
+    public void showTables(SQLiteDatabase db){
+        db.execSQL("SELECT name FROM sqlite_master WHERE type='table';");
     }
 
 

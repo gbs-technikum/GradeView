@@ -80,7 +80,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         finish();
     }
 
-    public String fachAusgeben(){
+    public String fachAusgeben() {
         return "";
     }
 
@@ -108,38 +108,32 @@ public class FaecherAuswahl extends AppCompatActivity {
 
         SQLiteDatabase sqLiteDatabase = fachDBHelper.getWritableDatabase();
         for (String s : ausgewaehlteFaecher) {
-           System.out.println(s + "----------------------------------------");
-           fachDBHelper.createTable(sqLiteDatabase, s);
-           faecherAusgeben();
+            System.out.println(s + "----------------------------------------");
+            fachDBHelper.createTable(sqLiteDatabase, s);
+
         }
+        faecherAusgeben();
     }
 
-    public void faecherAusgeben(){
+    public void faecherAusgeben() {
         SQLiteDatabase database = fachDBHelper.getReadableDatabase();
 
-        String[] projection ={
-                FachContract.FachEntry._ID,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_1,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_2,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_3
-        };
 
 
-
-        Cursor cursor = database.query(FachContract.FachEntry.TABLE_NAME, projection, null, null, null, null, null);
-
+        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
 
 
-        List itemIds = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            long itemId = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(FachContract.FachEntry._ID));
-            itemIds.add(itemId);
+        List<String> itemIds = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+
+            String s = cursor.getString(cursor.getColumnIndex("name"));
+            itemIds.add(s);
         }
         cursor.close();
 
-        for (Object itemId : itemIds) {
-            System.out.println(itemId.toString());
+        for (String itemId : itemIds) {
+            System.out.println(itemId + " READ TABLE");
         }
 
     }
