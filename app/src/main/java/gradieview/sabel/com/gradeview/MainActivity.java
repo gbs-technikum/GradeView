@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Datenbank erstellen
-        FachDBHelper fachDBHelper = new FachDBHelper(getBaseContext());
-        fachDBHelper.getWritableDatabase();
-
-        SQLiteDatabase db = fachDBHelper.getReadableDatabase();
+//        FachDBHelper fachDBHelper = new FachDBHelper(getBaseContext());
+//        fachDBHelper.getWritableDatabase();
+//
+//        SQLiteDatabase db = fachDBHelper.getReadableDatabase();
 
 
 

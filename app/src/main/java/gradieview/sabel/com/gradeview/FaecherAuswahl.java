@@ -1,6 +1,9 @@
 package gradieview.sabel.com.gradeview;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FaecherAuswahl extends AppCompatActivity {
 
@@ -19,6 +23,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> faecher, ausgewaehlteFaecher, vonMainActivity;
     private Intent intent;
+    private FachDBHelper fachDBHelper;
 
     public FaecherAuswahl() {
         this.faecher = new ArrayList<>();
@@ -30,6 +35,9 @@ public class FaecherAuswahl extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faecher_auswahl);
+
+        //Datenbank erstellen
+        fachDBHelper = new FachDBHelper(getBaseContext());
 
         // Intent holen
         intent = getIntent();
@@ -62,12 +70,18 @@ public class FaecherAuswahl extends AppCompatActivity {
         });
     }
 
+    //todo nach Datenbankanschluss löschen
     // Array mit ausgewählten Fächern an MainActivity.java übergeben und FaecherAuswahl.java wird geschlossen -> zurück zu MainActivity.java
     public void speichern() {
         this.intent = new Intent();
         intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
         setResult(RESULT_OK, intent);
+        // todo finisch nach button Fertig Menüpunkt
         finish();
+    }
+
+    public String fachAusgeben(){
+        return "";
     }
 
     // Menü hinzufügen in Leiste oben rechts
@@ -84,9 +98,50 @@ public class FaecherAuswahl extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fertig:
                 speichern();
+                faecherAlsTabelleInDatenbankSchreiben();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void faecherAlsTabelleInDatenbankSchreiben() {
+
+        SQLiteDatabase sqLiteDatabase = fachDBHelper.getWritableDatabase();
+        for (String s : ausgewaehlteFaecher) {
+           System.out.println(s + "----------------------------------------");
+           fachDBHelper.createTable(sqLiteDatabase, s);
+           faecherAusgeben();
+        }
+    }
+
+    public void faecherAusgeben(){
+        SQLiteDatabase database = fachDBHelper.getReadableDatabase();
+
+        String[] projection ={
+                FachContract.FachEntry._ID,
+                FachContract.FachEntry.COLUMN_NAME_TITLE_1,
+                FachContract.FachEntry.COLUMN_NAME_TITLE_2,
+                FachContract.FachEntry.COLUMN_NAME_TITLE_3
+        };
+
+
+
+        Cursor cursor = database.query(FachContract.FachEntry.TABLE_NAME, projection, null, null, null, null, null);
+
+
+
+        List itemIds = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            long itemId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(FachContract.FachEntry._ID));
+            itemIds.add(itemId);
+        }
+        cursor.close();
+
+        for (Object itemId : itemIds) {
+            System.out.println(itemId.toString());
+        }
+
     }
 
     //Todo alle Fächer hinzufügen
@@ -96,6 +151,7 @@ public class FaecherAuswahl extends AppCompatActivity {
         faecher.add("Deutsch");
     }
 
+    // Todo nach Datenbankanschluss löschen
     // Fächer vergleich damit nicht wieder alle Fächer hinzugefügt werden
     public void faecherVergleich(ArrayList<String> vonMainActivity, ArrayList<String> vonFaecherAuswahl) {
         System.out.println(vonMainActivity);

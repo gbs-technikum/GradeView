@@ -15,8 +15,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " +
-//                    FachContract.FachEntry.TABLE_NAME
-                    "Test"
+                    FachContract.FachEntry.TABLE_NAME
                     + " (" +
                     FachContract.FachEntry._ID + " INTEGER PRIMARY KEY, " +
                     FachContract.FachEntry.COLUMN_NAME_TITLE_1 + " INTEGER, " +
@@ -40,6 +39,20 @@ public class FachDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    public void createTable(SQLiteDatabase db, String tabellenname){
+
+
+
+        db.execSQL( "CREATE TABLE IF NOT EXISTS " +
+               tabellenname
+                + " (" +
+                FachContract.FachEntry._ID + " INTEGER PRIMARY KEY, " +
+                FachContract.FachEntry.COLUMN_NAME_TITLE_1 + " INTEGER, " +
+                FachContract.FachEntry.COLUMN_NAME_TITLE_2 + " INTEGER, "+
+                FachContract.FachEntry.COLUMN_NAME_TITLE_3 + " INTEGER)");
+
     }
 
 
