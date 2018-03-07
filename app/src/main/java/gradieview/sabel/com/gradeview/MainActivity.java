@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //Datenbank erstellen
+        //  Datenbank erstellen
 //        FachDBHelper fachDBHelper = new FachDBHelper(getBaseContext());
 //        fachDBHelper.getWritableDatabase();
 //
