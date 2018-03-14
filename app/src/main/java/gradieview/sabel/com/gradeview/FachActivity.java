@@ -13,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,10 @@ public class FachActivity extends AppCompatActivity {
     private static String fachname;
     private Button buttonSAplus;
     private EditText editTextSA;
-    private TextView txtViewSa;
     private FachDBHelper fachDBHelper;
+    private ListView lv_SANoten;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> listSANoten;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +44,18 @@ public class FachActivity extends AppCompatActivity {
 
         editTextSA = findViewById(R.id.editTextSA);
 
-        txtViewSa = findViewById(R.id.txtViewSa);
+        lv_SANoten = findViewById(R.id.lv_SANoten);
+        listSANoten = new ArrayList<>();
 
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSANoten);
+        arrayAdapter.add("Schulaufgabe");
+        lv_SANoten.setAdapter(arrayAdapter);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
         if (notenAusDatenbankLesen()){
-            txtViewSa.setVisibility(View.VISIBLE);
+            lv_SANoten.setVisibility(View.VISIBLE);
         }
-
-
 
 
         buttonSAplus.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +76,7 @@ public class FachActivity extends AppCompatActivity {
                     String note = editTextSA.getText().toString();
                     notenInDatenbankSchreiben(new Integer(note));
                     notenAusDatenbankLesen();
-                    txtViewSa.setVisibility(View.VISIBLE);
+                    lv_SANoten.setVisibility(View.VISIBLE);
                     editTextSA.setVisibility(View.GONE);
                     editTextSA.setText("");
                     //eingabefeld schließen
@@ -99,12 +105,12 @@ public class FachActivity extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 notenSA.add(cursor.getString(cursor.getColumnIndex(FachContract.FachEntry.COLUMN_NAME_TITLE_1)));
             }
-            String temp = "";
+
             for (String s : notenSA) {
-                temp += " " + s;
+                arrayAdapter.add(s);
             }
 
-            txtViewSa.setText(temp);
+
         } else{
             return false;
         }
