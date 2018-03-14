@@ -20,7 +20,7 @@ public final class FachContract {
         //Todo evtl. FachActivity anders holen
 
 
-        private static String tabellenName = "test";
+        private static String tabellenName = "Test";
 
 
         public static String TABLE_NAME = tabellenName;

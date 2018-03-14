@@ -1,7 +1,7 @@
 package gradieview.sabel.com.gradeview;
 
-import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
+    private FachDBHelper fachDBHelper;
 
 
     public MainActivity() {
@@ -30,13 +32,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Todo Darf nur aufgerufen werden wenn man aus FaecherAuswahl.class kommt
+        faecherAusDBlesenUndInLVhinzufuegen();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fachDBHelper = new FachDBHelper(getBaseContext());
 
-        //Todo Test löschen
-        ausgewaehlteFaecher.add("Test");
 
         // ListView
         listView = findViewById(R.id.lv_faecher);
@@ -59,24 +67,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        faecherAusDBlesenUndInLVhinzufuegen();
+    }
 
-        //  Datenbank erstellen
-//        FachDBHelper fachDBHelper = new FachDBHelper(getBaseContext());
-//        fachDBHelper.getWritableDatabase();
-//
-//        SQLiteDatabase db = fachDBHelper.getReadableDatabase();
-
-
-
+    public void faecherAusDBlesenUndInLVhinzufuegen() {
+        SQLiteDatabase database = fachDBHelper.getReadableDatabase();
+        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
+        List<String> itemIds = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            String s = cursor.getString(cursor.getColumnIndex("name"));
+            itemIds.add(s);
+        }
+        cursor.close();
+        for (String itemId : itemIds) {
+            if (!"android_metadata".equals(itemId) && !"Test".equals(itemId)) {
+                arrayAdapter.add(itemId);
+            }
+        }
     }
 
 
     // Ausgewählte Fächer von FaecherAuswahl.java hinzufügen
-    private void faecherHinzufuegen() {
-        for (String fach : ausgewaehlteFaecher) {
-            arrayAdapter.add(fach);
-        }
-    }
+//    private void faecherHinzufuegen() {
+//        for (String fach : ausgewaehlteFaecher) {
+//            arrayAdapter.add(fach);
+//        }
+//    }
 
     // Menü hinzufügen (rechts oben in Leiste)
     @Override
@@ -101,17 +117,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Array Liste von FaecherAuswahl.java mit dem Inhalt der ausgewählten Fächer
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("onActivityResult MainActivity");
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                ausgewaehlteFaecher = data.getStringArrayListExtra("listeFaecher");
-                System.out.println(ausgewaehlteFaecher);
-                faecherHinzufuegen();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        System.out.println("onActivityResult MainActivity");
+//        if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+//                ausgewaehlteFaecher = data.getStringArrayListExtra("listeFaecher");
+//                System.out.println(ausgewaehlteFaecher);
+//                faecherHinzufuegen();
+//            }
+//        }
+//    }
 
     @Override
     public boolean equals(Object o) {

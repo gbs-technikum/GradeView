@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +32,6 @@ public class FachActivity extends AppCompatActivity {
     private FachDBHelper fachDBHelper;
     private ListView lv_SANoten;
     private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> listSANoten;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +45,10 @@ public class FachActivity extends AppCompatActivity {
         editTextSA = findViewById(R.id.editTextSA);
 
         lv_SANoten = findViewById(R.id.lv_SANoten);
-        listSANoten = new ArrayList<>();
-
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listSANoten);
-        arrayAdapter.add("Schulaufgabe");
-        lv_SANoten.setAdapter(arrayAdapter);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
-        if (notenAusDatenbankLesen()){
+        if (notenAusDatenbankLesen()) {
             lv_SANoten.setVisibility(View.VISIBLE);
         }
 
@@ -88,6 +83,36 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
+//        lv_SANoten.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                arrayAdapter.remove(arrayAdapter.getItem(position));
+//
+//                arrayAdapter.notifyDataSetChanged();
+//            }
+//        });
+
+
+        // Noten löschen
+        // Todo Tabelle löschen und neu schreiben
+        lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                arrayAdapter.remove(arrayAdapter.getItem(position));
+                arrayAdapter.notifyDataSetChanged();
+                SQLiteDatabase db = fachDBHelper.getWritableDatabase();
+                if (position > 0) {
+//                    fachDBHelper.onUpgrade(db,1,2);
+                    db.delete(fachname, "_ID" + "=" + position, null);
+//                System.out.println(FachContract.FachEntry._ID + "=" + (position + 1));
+                    notenAusDatenbankLesen();
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private boolean notenAusDatenbankLesen() {
@@ -100,18 +125,17 @@ public class FachActivity extends AppCompatActivity {
         };
 
         Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
-        if (cursor != null && cursor.getCount()>0) {
+        if (cursor != null && cursor.getCount() > 0) {
             List<String> notenSA = new ArrayList<>();
+            notenSA.add("Schulaufgabe");
             while (cursor.moveToNext()) {
                 notenSA.add(cursor.getString(cursor.getColumnIndex(FachContract.FachEntry.COLUMN_NAME_TITLE_1)));
+                System.out.println(cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID)));
             }
+            arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notenSA);
+            lv_SANoten.setAdapter(arrayAdapter);
 
-            for (String s : notenSA) {
-                arrayAdapter.add(s);
-            }
-
-
-        } else{
+        } else {
             return false;
         }
         return true;
@@ -147,8 +171,6 @@ public class FachActivity extends AppCompatActivity {
     public String getFachname() {
         return fachname;
     }
-
-
 
 
 }

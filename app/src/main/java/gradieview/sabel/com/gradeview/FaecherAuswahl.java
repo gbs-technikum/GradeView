@@ -112,37 +112,17 @@ public class FaecherAuswahl extends AppCompatActivity {
             fachDBHelper.createTable(sqLiteDatabase, s);
 
         }
-        faecherAusgeben();
     }
 
-    public void faecherAusgeben() {
-        SQLiteDatabase database = fachDBHelper.getReadableDatabase();
 
-
-
-        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
-
-
-        List<String> itemIds = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-
-            String s = cursor.getString(cursor.getColumnIndex("name"));
-            itemIds.add(s);
-        }
-        cursor.close();
-
-        for (String itemId : itemIds) {
-            System.out.println(itemId + " READ TABLE");
-        }
-
-    }
 
     //Todo alle Fächer hinzufügen
     // Fächer werden hinzugefügt
     public void faecherHinzufuegen() {
         faecher.add("Mathe");
         faecher.add("Deutsch");
+        faecher.add("Englisch");
+        faecher.add("Programmieren");
     }
 
     // Todo nach Datenbankanschluss löschen
