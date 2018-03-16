@@ -115,7 +115,7 @@ public class FachActivity extends AppCompatActivity {
 //                    fachDBHelper.onUpgrade(db,1,2);
                     db.delete(fachname, "_ID" + "=" + position, null);
 //                System.out.println(FachContract.FachEntry._ID + "=" + (position + 1));
-                    notenAusDatenbankLesen();
+//                    notenAusDatenbankLesen();
                     return true;
                 }
                 return false;
@@ -125,7 +125,7 @@ public class FachActivity extends AppCompatActivity {
     }
 
     private List<NotenEntry> notenAusDatenbankLesen() {
-        fachDBHelper.getReadableDatabase();
+        fachDBHelper.readDatabase();
         return fachDBHelper.readAll(getFachname());
     }
 
