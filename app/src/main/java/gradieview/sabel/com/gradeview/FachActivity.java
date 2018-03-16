@@ -3,7 +3,6 @@ package gradieview.sabel.com.gradeview;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +43,21 @@ public class FachActivity extends AppCompatActivity {
         editTextSA = findViewById(R.id.editTextSA);
 
         lv_SANoten = findViewById(R.id.lv_SANoten);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        lv_SANoten.setAdapter(arrayAdapter);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
-        if (notenAusDatenbankLesen()) {
-            lv_SANoten.setVisibility(View.VISIBLE);
+
+        List<NotenEntry> list = notenAusDatenbankLesen();
+        if(list != null){
+            for (NotenEntry notenEntry : list) {
+                arrayAdapter.add(String.valueOf(notenEntry.getNote()));
+            }
         }
+
+        lv_SANoten.setVisibility(View.VISIBLE);
+
 
 
         buttonSAplus.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +76,10 @@ public class FachActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
                     String note = editTextSA.getText().toString();
-                    notenInDatenbankSchreiben(new Integer(note));
-                    notenAusDatenbankLesen();
+                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                    notenInDatenbankSchreiben(notenEntry);
+                    arrayAdapter.add(note);
+                    arrayAdapter.notifyDataSetChanged();
                     lv_SANoten.setVisibility(View.VISIBLE);
                     editTextSA.setVisibility(View.GONE);
                     editTextSA.setText("");
@@ -115,30 +124,9 @@ public class FachActivity extends AppCompatActivity {
 
     }
 
-    private boolean notenAusDatenbankLesen() {
-        SQLiteDatabase db = fachDBHelper.getReadableDatabase();
-        String[] projection = {
-                FachContract.FachEntry._ID,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_1,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_2,
-                FachContract.FachEntry.COLUMN_NAME_TITLE_3
-        };
-
-        Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
-        if (cursor != null && cursor.getCount() > 0) {
-            List<String> notenSA = new ArrayList<>();
-            notenSA.add("Schulaufgabe");
-            while (cursor.moveToNext()) {
-                notenSA.add(cursor.getString(cursor.getColumnIndex(FachContract.FachEntry.COLUMN_NAME_TITLE_1)));
-                System.out.println(cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID)));
-            }
-            arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notenSA);
-            lv_SANoten.setAdapter(arrayAdapter);
-
-        } else {
-            return false;
-        }
-        return true;
+    private List<NotenEntry> notenAusDatenbankLesen() {
+        fachDBHelper.getReadableDatabase();
+        return fachDBHelper.readAll(getFachname());
     }
 
     @Override
@@ -152,12 +140,9 @@ public class FachActivity extends AppCompatActivity {
     }
 
     // Noten in Datenbank schreiben
-    private void notenInDatenbankSchreiben(int note) {
-        SQLiteDatabase db = fachDBHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(FachContract.FachEntry.COLUMN_NAME_TITLE_1, note);
-        long newRowId = db.insert(fachname, null, values);
-        System.out.println(newRowId);
+    private void notenInDatenbankSchreiben(NotenEntry notenEntry) {
+        fachDBHelper.writeDatabase();
+        fachDBHelper.insert(fachname, notenEntry);
     }
 
     // Menü hinzufügen in Leiste oben rechts
