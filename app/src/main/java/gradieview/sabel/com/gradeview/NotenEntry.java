@@ -39,6 +39,6 @@ public class NotenEntry {
 
     @Override
     public String toString() {
-        return super.toString();
+        return String.valueOf(note);
     }
 }

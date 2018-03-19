@@ -29,7 +29,7 @@ public class FachActivity extends AppCompatActivity {
     private EditText editTextSA;
     private FachDBHelper fachDBHelper;
     private ListView lv_SANoten;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<NotenEntry> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +50,12 @@ public class FachActivity extends AppCompatActivity {
 
 
         List<NotenEntry> list = notenAusDatenbankLesen();
-        if(list != null){
+        if (list != null) {
             for (NotenEntry notenEntry : list) {
-                arrayAdapter.add(String.valueOf(notenEntry.getNote()));
+                arrayAdapter.add(notenEntry);
             }
         }
-
         lv_SANoten.setVisibility(View.VISIBLE);
-
 
 
         buttonSAplus.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +76,7 @@ public class FachActivity extends AppCompatActivity {
                     String note = editTextSA.getText().toString();
                     NotenEntry notenEntry = new NotenEntry(new Integer(note));
                     notenInDatenbankSchreiben(notenEntry);
-                    arrayAdapter.add(note);
+                    arrayAdapter.add(notenEntry);
                     arrayAdapter.notifyDataSetChanged();
                     lv_SANoten.setVisibility(View.VISIBLE);
                     editTextSA.setVisibility(View.GONE);
@@ -108,15 +106,12 @@ public class FachActivity extends AppCompatActivity {
         lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                arrayAdapter.remove(arrayAdapter.getItem(position));
+                NotenEntry notenEntry = arrayAdapter.getItem(position);
+                arrayAdapter.remove(notenEntry);
                 arrayAdapter.notifyDataSetChanged();
-                SQLiteDatabase db = fachDBHelper.getWritableDatabase();
-                if (position > 0) {
-//                    fachDBHelper.onUpgrade(db,1,2);
-                    db.delete(fachname, "_ID" + "=" + position, null);
-//                System.out.println(FachContract.FachEntry._ID + "=" + (position + 1));
-//                    notenAusDatenbankLesen();
-                    return true;
+                if (position >= 0) {//
+                    fachDBHelper.getWritableDatabase();
+                    return fachDBHelper.delete(fachname, notenEntry);
                 }
                 return false;
             }
@@ -126,7 +121,8 @@ public class FachActivity extends AppCompatActivity {
 
     private List<NotenEntry> notenAusDatenbankLesen() {
         fachDBHelper.readDatabase();
-        return fachDBHelper.readAll(getFachname());
+        List<NotenEntry> notenEntries = fachDBHelper.readAll(getFachname());
+        return notenEntries;
     }
 
     @Override

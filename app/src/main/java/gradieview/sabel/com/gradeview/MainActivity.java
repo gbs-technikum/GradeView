@@ -1,8 +1,6 @@
 package gradieview.sabel.com.gradeview;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Todo Darf nur aufgerufen werden wenn man aus FaecherAuswahl.class kommt
+
+
         faecherAusDBlesenUndInLVhinzufuegen();
     }
 
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.lv_faecher);
 
         // String Array der ausgewählten Fächer
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 
         // Array zur ListView hinzufügen
         listView.setAdapter(arrayAdapter);
@@ -71,17 +71,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void faecherAusDBlesenUndInLVhinzufuegen() {
-        SQLiteDatabase database = fachDBHelper.getReadableDatabase();
-        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
-        List<String> itemIds = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String s = cursor.getString(cursor.getColumnIndex("name"));
-            itemIds.add(s);
-        }
-        cursor.close();
-        for (String itemId : itemIds) {
-            if (!"android_metadata".equals(itemId) && !"Test".equals(itemId)) {
-                arrayAdapter.add(itemId);
+        fachDBHelper.readDatabase();
+//        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
+        List<String> itemIds = fachDBHelper.readFaecher();
+//        while (cursor.moveToNext()) {
+//            String s = cursor.getString(cursor.getColumnIndex("name"));
+//            itemIds.add(s);
+//        }
+//        cursor.close();
+
+        if (itemIds != null && itemIds.size() > 0) {
+            for (int i = 0; i < itemIds.size(); i++) {
+                String temp = itemIds.get(i);
+
+                if (!"android_metadata".equals(temp) && !"Test".equals(temp)) {
+//                    System.out.println(arrayAdapter.getItem(i));
+                    arrayAdapter.add(temp);
+                }
             }
         }
     }

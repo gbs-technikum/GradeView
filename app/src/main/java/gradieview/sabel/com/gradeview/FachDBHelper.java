@@ -95,4 +95,28 @@ public class FachDBHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }
+
+    public boolean delete(String fachname, NotenEntry notenEntry) {
+        if (fachname != null && notenEntry != null) {
+            String entryId = notenEntry.getId();
+            db.delete(fachname, "_ID" + " = '" + entryId + "' ", null);
+            return true;
+        }
+        return false;
+    }
+
+    public List<String> readFaecher(){
+        if (db != null) {
+            Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
+            List<String> itemIds = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                String s = cursor.getString(cursor.getColumnIndex("name"));
+                itemIds.add(s);
+            }
+            cursor.close();
+            return itemIds;
+        }
+        return null;
+    }
 }
