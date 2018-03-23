@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private FachDBHelper fachDBHelper;
+    private FaecherListAdapter faecherListAdapter;
 
 
     public MainActivity() {
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         // ListView
         listView = findViewById(R.id.lv_faecher);
 
-        // String Array der ausgewählten Fächer
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+//        // String Array der ausgewählten Fächer
+//        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 
         // Array zur ListView hinzufügen
         listView.setAdapter(arrayAdapter);
@@ -81,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
 //        cursor.close();
 
         ausgewaehlteFaecher = (ArrayList<String>) itemIds;
+        faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher);
+//        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+//        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(faecherListAdapter);
+//        arrayAdapter.remove("android_metadata");
+//        arrayAdapter.remove("Test");
 
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
-        listView.setAdapter(arrayAdapter);
-
-        arrayAdapter.remove("android_metadata");
-        arrayAdapter.remove("Test");
-
-        arrayAdapter.notifyDataSetChanged();
+//        arrayAdapter.notifyDataSetChanged();
 
     }
 
