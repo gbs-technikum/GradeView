@@ -1,9 +1,7 @@
 package gradieview.sabel.com.gradeview;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -109,9 +106,9 @@ public class FachActivity extends AppCompatActivity {
                 NotenEntry notenEntry = arrayAdapter.getItem(position);
                 arrayAdapter.remove(notenEntry);
                 arrayAdapter.notifyDataSetChanged();
-                if (position >= 0) {//
+                if (position >= 0) {
                     fachDBHelper.getWritableDatabase();
-                    return fachDBHelper.delete(fachname, notenEntry);
+                    return fachDBHelper.deleteNote(fachname, notenEntry);
                 }
                 return false;
             }
