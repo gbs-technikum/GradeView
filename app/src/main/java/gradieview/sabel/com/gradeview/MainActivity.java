@@ -87,12 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("Warnung");
                 AlertDialog dialog = builder.create();
 
-                String eintrag = arrayAdapter.getItem(position);
-                arrayAdapter.remove(eintrag);
-                arrayAdapter.notifyDataSetChanged();
+                String eintrag = (String) faecherListAdapter.getItem(position);
+                faecherListAdapter.deletItem(eintrag);
+                faecherListAdapter.notifyDataSetChanged();
+                //arrayAdapter.remove(eintrag);
+                //arrayAdapter.notifyDataSetChanged();
                 fachDBHelper.getWritableDatabase();
                 fachDBHelper.deleteFach(eintrag);
-
+                //dialog.show();
 
                 return false;
             }
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
+
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
 

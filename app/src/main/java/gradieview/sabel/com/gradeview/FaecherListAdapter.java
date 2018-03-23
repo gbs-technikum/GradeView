@@ -21,6 +21,7 @@ public class FaecherListAdapter extends BaseAdapter {
 
 
 
+
     public FaecherListAdapter(Context context, List<String> faecher) {
         this.context = context;
         this.faecher= faecher;
@@ -28,6 +29,9 @@ public class FaecherListAdapter extends BaseAdapter {
     }
 
 
+    public void deletItem(String i){
+        faecher.remove(i);
+    }
 
     @Override
     public int getCount() {
