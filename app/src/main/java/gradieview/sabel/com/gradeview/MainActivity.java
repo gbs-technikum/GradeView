@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
-
+        faecherListAdapter.deletItem("android_metadata");
+        faecherListAdapter.deletItem("Test");
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
 
