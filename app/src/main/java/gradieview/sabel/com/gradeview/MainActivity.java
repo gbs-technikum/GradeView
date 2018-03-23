@@ -1,5 +1,6 @@
 package gradieview.sabel.com.gradeview;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private FachDBHelper fachDBHelper;
     private FaecherListAdapter faecherListAdapter;
-    AlertDialog.Builder builder;
 
 
     public MainActivity() {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (fachDBHelper!= null){
+        if (fachDBHelper != null) {
             fachDBHelper.close();
         }
     }
@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
-
-        this.builder = new AlertDialog.Builder(this);
 
 
         // ListView
@@ -83,11 +81,23 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                builder.setMessage("Wollen Sie das Fach wirklich löschen?");
-                builder.setTitle("Warnung");
-                AlertDialog dialog = builder.create();
-
                 String eintrag = (String) faecherListAdapter.getItem(position);
+                loescheFachAusListe(eintrag);
+                return true;
+            }
+        });
+
+        faecherAusDBlesenUndInLVhinzufuegen();
+    }
+
+    private void loescheFachAusListe(final String eintrag) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Wollen Sie das Fach wirklich löschen?");
+        builder.setTitle("Warnung");
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 faecherListAdapter.deletItem(eintrag);
                 faecherListAdapter.notifyDataSetChanged();
                 //arrayAdapter.remove(eintrag);
@@ -95,12 +105,20 @@ public class MainActivity extends AppCompatActivity {
                 fachDBHelper.getWritableDatabase();
                 fachDBHelper.deleteFach(eintrag);
                 //dialog.show();
-
-                return false;
             }
         });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
 
-        faecherAusDBlesenUndInLVhinzufuegen();
+
+
+
+
     }
 
     public void faecherAusDBlesenUndInLVhinzufuegen() {
