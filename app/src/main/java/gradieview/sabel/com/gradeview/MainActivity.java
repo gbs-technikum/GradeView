@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Todo Darf nur aufgerufen werden wenn man aus FaecherAuswahl.class kommt
-
-
         faecherAusDBlesenUndInLVhinzufuegen();
     }
 
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, FachActivity.class);
                 intent.putExtra("fachname", ausgewaehltesFach);
                 MainActivity.this.startActivity(intent);
+
             }
         });
 
@@ -80,16 +80,16 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        cursor.close();
 
-        if (itemIds != null && itemIds.size() > 0) {
-            for (int i = 0; i < itemIds.size(); i++) {
-                String temp = itemIds.get(i);
+        ausgewaehlteFaecher = (ArrayList<String>) itemIds;
 
-                if (!"android_metadata".equals(temp) && !"Test".equals(temp)) {
-//                    System.out.println(arrayAdapter.getItem(i));
-                    arrayAdapter.add(temp);
-                }
-            }
-        }
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
+        listView.setAdapter(arrayAdapter);
+
+        arrayAdapter.remove("android_metadata");
+        arrayAdapter.remove("Test");
+
+        arrayAdapter.notifyDataSetChanged();
+
     }
 
 
