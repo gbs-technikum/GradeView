@@ -96,10 +96,18 @@ public class FachDBHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public boolean delete(String fachname, NotenEntry notenEntry) {
+    public boolean deleteNote(String fachname, NotenEntry notenEntry) {
         if (fachname != null && notenEntry != null) {
             String entryId = notenEntry.getId();
             db.delete(fachname, "_ID" + " = '" + entryId + "' ", null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteFach(String fachname){
+        if(fachname!= null){
+            db.execSQL("DROP TABLE IF EXISTS " + fachname);
             return true;
         }
         return false;

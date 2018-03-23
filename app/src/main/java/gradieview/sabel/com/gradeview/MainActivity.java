@@ -1,6 +1,7 @@
 package gradieview.sabel.com.gradeview;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private FachDBHelper fachDBHelper;
     private FaecherListAdapter faecherListAdapter;
+    AlertDialog.Builder builder;
 
 
     public MainActivity() {
@@ -39,11 +41,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (fachDBHelper!= null){
+            fachDBHelper.close();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
+
+        this.builder = new AlertDialog.Builder(this);
 
 
         // ListView
@@ -65,6 +77,24 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("fachname", ausgewaehltesFach);
                 MainActivity.this.startActivity(intent);
 
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                builder.setMessage("Wollen Sie das Fach wirklich löschen?");
+                builder.setTitle("Warnung");
+                AlertDialog dialog = builder.create();
+
+                String eintrag = arrayAdapter.getItem(position);
+                arrayAdapter.remove(eintrag);
+                arrayAdapter.notifyDataSetChanged();
+                fachDBHelper.getWritableDatabase();
+                fachDBHelper.deleteFach(eintrag);
+
+
+                return false;
             }
         });
 
@@ -90,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 //        arrayAdapter.remove("Test");
 
 //        arrayAdapter.notifyDataSetChanged();
+
 
     }
 
