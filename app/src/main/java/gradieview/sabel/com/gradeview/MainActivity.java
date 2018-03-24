@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
 //        cursor.close();
 
         ausgewaehlteFaecher = (ArrayList<String>) itemIds;
-        faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher);
+        //todo liste mit noten hinzufuegen, anstatt null
+        faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher, null);
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);

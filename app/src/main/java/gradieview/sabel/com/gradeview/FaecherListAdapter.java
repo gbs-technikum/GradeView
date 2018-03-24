@@ -17,19 +17,18 @@ public class FaecherListAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> faecher;
-    private FachPlusNote fachPlusNote;
+    private List<String> noten;
 
 
-
-
-    public FaecherListAdapter(Context context, List<String> faecher) {
+    public FaecherListAdapter(Context context, List<String> faecher, List<String> noten) {
         this.context = context;
-        this.faecher= faecher;
+        this.faecher = faecher;
+        this.noten = noten;
 
     }
 
 
-    public void deletItem(String i){
+    public void deletItem(String i) {
         faecher.remove(i);
     }
 
@@ -52,12 +51,15 @@ public class FaecherListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.textview_noten, null);
         TextView tvFach = v.findViewById(R.id.tv_fach);
-//        TextView tvNote = v.findViewById(R.id.tv_gesamtnote);
+        TextView tvNote = v.findViewById(R.id.tv_durchschnittsnote);
 
 
-
-        tvFach.setText(faecher.get(i));
-//        tvNote.setText();
+        if (faecher != null && faecher.size() > 0) {
+            tvFach.setText(faecher.get(i));
+        }
+        if (noten != null && noten.size() > 0) {
+            tvNote.setText(String.valueOf(noten.get(i)));
+        }
         return v;
     }
 }
