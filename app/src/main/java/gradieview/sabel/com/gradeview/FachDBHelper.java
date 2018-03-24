@@ -36,11 +36,11 @@ public class FachDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void writeDatabase() {
+    public void schreibRechteDatenbank() {
         this.db = super.getWritableDatabase();
     }
 
-    public void readDatabase() {
+    public void leseRechtDatenbank() {
         this.db = super.getReadableDatabase();
     }
 

@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,13 +16,12 @@ public class FaecherListAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> faecher;
-    private List<String> noten;
 
 
-    public FaecherListAdapter(Context context, List<String> faecher, List<String> noten) {
+    public FaecherListAdapter(Context context, List<String> faecher) {
         this.context = context;
         this.faecher = faecher;
-        this.noten = noten;
+
 
     }
 
@@ -47,19 +45,35 @@ public class FaecherListAdapter extends BaseAdapter {
         return 0;
     }
 
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.textview_noten, null);
         TextView tvFach = v.findViewById(R.id.tv_fach);
         TextView tvNote = v.findViewById(R.id.tv_durchschnittsnote);
+        String fach = String.valueOf(getItem(i));
+        FachDBHelper fachDBHelper = new FachDBHelper(context);
+        fachDBHelper.leseRechtDatenbank();
+        List<NotenEntry> notenEntries = fachDBHelper.readAll(fach);
 
+        double noten = 0;
+        if (notenEntries != null && notenEntries.size() > 0) {
+            for (int j = 0; j < notenEntries.size(); j++) {
+                noten += notenEntries.get(j).getNote();
+            }
+            noten /= notenEntries.size();
+            String durchschnittsnote = String.valueOf(noten);
+            if (durchschnittsnote.length() > 3) {
+                durchschnittsnote = durchschnittsnote.substring(0, 4);
+            }
+            tvNote.setText(durchschnittsnote);
+        }
 
         if (faecher != null && faecher.size() > 0) {
             tvFach.setText(faecher.get(i));
         }
-        if (noten != null && noten.size() > 0) {
-            tvNote.setText(String.valueOf(noten.get(i)));
-        }
+
+
         return v;
     }
 }

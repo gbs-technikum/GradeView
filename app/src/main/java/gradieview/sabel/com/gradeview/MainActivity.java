@@ -59,11 +59,12 @@ public class MainActivity extends AppCompatActivity {
         // ListView
         listView = findViewById(R.id.lv_faecher);
 
+        faecherAusDBlesenUndInLVhinzufuegen();
 //        // String Array der ausgewählten Fächer
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 
         // Array zur ListView hinzufügen
-        listView.setAdapter(arrayAdapter);
+        //       listView.setAdapter(arrayAdapter);
 
 
         // Beim Clicken eines Items der ListView
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        faecherAusDBlesenUndInLVhinzufuegen();
     }
 
     private void loescheFachAusListe(final String eintrag) {
@@ -114,15 +114,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
-
-
-
-
     }
 
     public void faecherAusDBlesenUndInLVhinzufuegen() {
-        fachDBHelper.readDatabase();
+        fachDBHelper.leseRechtDatenbank();
 //        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
         List<String> itemIds = fachDBHelper.readFaecher();
 //        while (cursor.moveToNext()) {
@@ -133,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
 
         ausgewaehlteFaecher = (ArrayList<String>) itemIds;
         //todo liste mit noten hinzufuegen, anstatt null
-        faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher, null);
+        faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher);
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
         faecherListAdapter.deletItem("android_metadata");
         faecherListAdapter.deletItem("Test");
+        faecherListAdapter.notifyDataSetChanged();
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
 

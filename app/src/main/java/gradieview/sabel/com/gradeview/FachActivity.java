@@ -117,7 +117,7 @@ public class FachActivity extends AppCompatActivity {
     }
 
     private List<NotenEntry> notenAusDatenbankLesen() {
-        fachDBHelper.readDatabase();
+        fachDBHelper.leseRechtDatenbank();
         List<NotenEntry> notenEntries = fachDBHelper.readAll(getFachname());
         return notenEntries;
     }
@@ -134,7 +134,7 @@ public class FachActivity extends AppCompatActivity {
 
     // Noten in Datenbank schreiben
     private void notenInDatenbankSchreiben(NotenEntry notenEntry) {
-        fachDBHelper.writeDatabase();
+        fachDBHelper.schreibRechteDatenbank();
         fachDBHelper.insert(fachname, notenEntry);
     }
 
