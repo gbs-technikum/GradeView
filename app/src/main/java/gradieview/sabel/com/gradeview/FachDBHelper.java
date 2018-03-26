@@ -25,7 +25,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
                     FachContract.FachEntry.TABLE_FAECHERLISTE
                     + " (" +
                     FachContract.FachEntry._ID + " TEXT PRIMARY KEY, " +
-                    FachContract.FachEntry.FACH + " TEXT, " +
+                    FachContract.FachEntry.FACH + " COLLATE NOCASE, " +
                     FachContract.FachEntry.AUSGEWAEHLT + " INTEGER, " +
                     " UNIQUE (" + FachContract.FachEntry.FACH + ")) ";
 
@@ -208,7 +208,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
         try {
             this.db.insertOrThrow(FachContract.FachEntry.TABLE_FAECHERLISTE, null, values);
         }catch (Exception e){
-            System.out.println("Fehler");
+
             return false;
         }
         return true;
@@ -217,7 +217,6 @@ public class FachDBHelper extends SQLiteOpenHelper {
     public void updateFaecherlisteEintragAusgewaehlt(FaecherEntry faecherEntry){
         ContentValues values = new ContentValues();
         String id = faecherEntry.getId();
-        System.out.println(id);
         String[]whereArgs = {id};
         int ausgewaehlt = faecherEntry.getAusgewaehlt();
         values.put(FachContract.FachEntry.AUSGEWAEHLT, ausgewaehlt);
