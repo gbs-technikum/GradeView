@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> ausgewaehlteFaecher;
+    private ArrayList<FaecherEntry> ausgewaehlteFaecher;
     private String fach;
     private Intent intent;
     private ListView listView;
@@ -81,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String eintrag = (String) faecherListAdapter.getItem(position);
-                loescheFachAusListe(eintrag);
+                FaecherEntry faecherEntry =(FaecherEntry) faecherListAdapter.getItem(position);
+                //String eintrag = faecherEntry.getFach();
+                loescheFachAusListe(faecherEntry);
                 return true;
             }
         });
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void loescheFachAusListe(final String eintrag) {
+    private void loescheFachAusListe(final FaecherEntry faecherEntry) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Wollen Sie das Fach wirklich löschen?");
         builder.setTitle("Warnung");
@@ -99,14 +100,15 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                faecherListAdapter.deletItem(eintrag);
+                faecherListAdapter.deletItem(faecherEntry);
                 faecherListAdapter.notifyDataSetChanged();
 
                 //arrayAdapter.remove(eintrag);
                 //arrayAdapter.notifyDataSetChanged();
                 fachDBHelper.getWritableDatabase();
-
-                fachDBHelper.deleteFach(eintrag);
+                faecherEntry.setAusgewaehlt(FaecherEntry.FALSE);
+                fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
+                fachDBHelper.deleteFach(faecherEntry.getFach());
                 //dialog.show();
             }
         });
@@ -122,21 +124,26 @@ public class MainActivity extends AppCompatActivity {
     public void faecherAusDBlesenUndInLVhinzufuegen() {
         fachDBHelper.leseRechtDatenbank();
 //        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
-        List<String> itemIds = fachDBHelper.readFaecherInUse();
+        List<FaecherEntry> itemIds = fachDBHelper.readFaecherlisteInUse();
 //        while (cursor.moveToNext()) {
 //            String s = cursor.getString(cursor.getColumnIndex("name"));
 //            itemIds.add(s);
 //        }
 //        cursor.close();
 
-        ausgewaehlteFaecher = (ArrayList<String>) itemIds;
+        ausgewaehlteFaecher = (ArrayList<FaecherEntry>) itemIds;
         //todo liste mit noten hinzufuegen, anstatt null
         faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher);
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
-        faecherListAdapter.deletItem("android_metadata");
-        faecherListAdapter.deletItem("Faecherliste");
+        for (FaecherEntry faecherEntry : ausgewaehlteFaecher) {
+            if ("android_metadata".equals(faecherEntry.getFach()) || "Faecherliste".equals(faecherEntry.getFach())){
+           // faecherListAdapter.deletItem(faecherEntry);
+        }}
+
+      //  faecherListAdapter.deletItem("android_metadata");
+      //  faecherListAdapter.deletItem("Faecherliste");
         faecherListAdapter.notifyDataSetChanged();
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
@@ -168,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fachHinzufuegen:
                 intent = new Intent(this, FaecherAuswahl.class);
-                intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
+               // intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
                 setResult(RESULT_OK, intent);
                 startActivityForResult(intent, 1);
                 return true;

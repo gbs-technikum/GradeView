@@ -2,9 +2,7 @@ package gradieview.sabel.com.gradeview;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.security.KeyStore;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FaecherAuswahl extends AppCompatActivity {
 
@@ -75,7 +71,7 @@ public class FaecherAuswahl extends AppCompatActivity {
                 arrayAdapter.notifyDataSetChanged();
                 faecherEntry.setAusgewaehlt(FaecherEntry.TRUE);
                 fachDBHelper.schreibRechteDatenbank();
-                fachDBHelper.updateFaecherlisteEingragAusgewaehlt(faecherEntry);
+                fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
                 ausgewaehlteFaecher.add(faecherEntry.getFach());
             }
         });

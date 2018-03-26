@@ -15,10 +15,10 @@ import java.util.List;
 public class FaecherListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<String> faecher;
+    private List<FaecherEntry> faecher;
 
 
-    public FaecherListAdapter(Context context, List<String> faecher) {
+    public FaecherListAdapter(Context context, List<FaecherEntry> faecher) {
         this.context = context;
         this.faecher = faecher;
 
@@ -26,8 +26,8 @@ public class FaecherListAdapter extends BaseAdapter {
     }
 
 
-    public void deletItem(String i) {
-        faecher.remove(i);
+    public void deletItem(FaecherEntry faecherEntry) {
+        faecher.remove(faecherEntry);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class FaecherListAdapter extends BaseAdapter {
         }
 
         if (faecher != null && faecher.size() > 0) {
-            tvFach.setText(faecher.get(i));
+            tvFach.setText(faecher.get(i).getFach());
         }
 
 

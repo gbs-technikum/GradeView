@@ -162,8 +162,39 @@ public class FachDBHelper extends SQLiteOpenHelper {
             list = new ArrayList<>();
             while (cursor.moveToNext()) {
                 if (cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.AUSGEWAEHLT)) == FaecherEntry.FALSE) {
+                    String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
                     String fach = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry.FACH));
+                    int ausgewaehlt = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.AUSGEWAEHLT));
                     FaecherEntry faecherEntry = new FaecherEntry(fach);
+                    faecherEntry.setId(id);
+                    faecherEntry.setAusgewaehlt(ausgewaehlt);
+                    list.add(faecherEntry);
+                }
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<FaecherEntry> readFaecherlisteInUse() {
+        List<FaecherEntry> list = null;
+        String[] projection = {
+                FachContract.FachEntry._ID,
+                FachContract.FachEntry.FACH,
+                FachContract.FachEntry.AUSGEWAEHLT
+        };
+
+        Cursor cursor = db.query(FachContract.FachEntry.TABLE_FAECHERLISTE, projection, null, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            list = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.AUSGEWAEHLT)) == FaecherEntry.TRUE) {
+                    String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    String fach = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry.FACH));
+                    int ausgewaehlt = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.AUSGEWAEHLT));
+                    FaecherEntry faecherEntry = new FaecherEntry(fach);
+                    faecherEntry.setId(id);
+                    faecherEntry.setAusgewaehlt(ausgewaehlt);
                     list.add(faecherEntry);
                 }
             }
@@ -188,10 +219,13 @@ public class FachDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public void updateFaecherlisteEingragAusgewaehlt(FaecherEntry faecherEntry){
+    public void updateFaecherlisteEintragAusgewaehlt(FaecherEntry faecherEntry){
         ContentValues values = new ContentValues();
+        String id = faecherEntry.getId();
+        System.out.println(id);
+        String[]whereArgs = {id};
         int ausgewaehlt = faecherEntry.getAusgewaehlt();
         values.put(FachContract.FachEntry.AUSGEWAEHLT, ausgewaehlt);
-        db.update(FachContract.FachEntry.TABLE_FAECHERLISTE, values, null, null);
+        db.update(FachContract.FachEntry.TABLE_FAECHERLISTE, values, FachContract.FachEntry._ID +"=?", whereArgs);
     }
 }
