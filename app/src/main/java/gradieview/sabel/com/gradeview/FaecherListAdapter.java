@@ -54,7 +54,7 @@ public class FaecherListAdapter extends BaseAdapter {
         String fach = String.valueOf(getItem(i));
         FachDBHelper fachDBHelper = new FachDBHelper(context);
         fachDBHelper.leseRechtDatenbank();
-        List<NotenEntry> notenEntries = fachDBHelper.readAll(fach);
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFach(fach);
 
         double noten = 0;
         if (notenEntries != null && notenEntries.size() > 0) {

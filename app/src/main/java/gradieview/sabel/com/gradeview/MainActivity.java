@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
-
         // ListView
         listView = findViewById(R.id.lv_faecher);
 
@@ -90,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void loescheFachAusListe(final String eintrag) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Wollen Sie das Fach wirklich löschen?");
@@ -100,9 +101,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 faecherListAdapter.deletItem(eintrag);
                 faecherListAdapter.notifyDataSetChanged();
+
                 //arrayAdapter.remove(eintrag);
                 //arrayAdapter.notifyDataSetChanged();
                 fachDBHelper.getWritableDatabase();
+
                 fachDBHelper.deleteFach(eintrag);
                 //dialog.show();
             }
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void faecherAusDBlesenUndInLVhinzufuegen() {
         fachDBHelper.leseRechtDatenbank();
 //        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
-        List<String> itemIds = fachDBHelper.readFaecher();
+        List<String> itemIds = fachDBHelper.readFaecherInUse();
 //        while (cursor.moveToNext()) {
 //            String s = cursor.getString(cursor.getColumnIndex("name"));
 //            itemIds.add(s);
@@ -133,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
         faecherListAdapter.deletItem("android_metadata");
-        faecherListAdapter.deletItem("Test");
+        faecherListAdapter.deletItem("Faecherliste");
         faecherListAdapter.notifyDataSetChanged();
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
