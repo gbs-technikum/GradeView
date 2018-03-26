@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private String fach;
     private Intent intent;
     private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
+ //   private ArrayAdapter<String> arrayAdapter;
     private FachDBHelper fachDBHelper;
     private FaecherListAdapter faecherListAdapter;
 
@@ -176,8 +176,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.fachHinzufuegen:
                 intent = new Intent(this, FaecherAuswahl.class);
                // intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
-                setResult(RESULT_OK, intent);
-                startActivityForResult(intent, 1);
+               // setResult(RESULT_OK, intent);
+               // startActivityForResult(intent, 1);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -209,7 +211,9 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null ? !intent.equals(that.intent) : that.intent != null) return false;
         if (listView != null ? !listView.equals(that.listView) : that.listView != null)
             return false;
-        return arrayAdapter != null ? arrayAdapter.equals(that.arrayAdapter) : that.arrayAdapter == null;
+        if (fachDBHelper != null ? !fachDBHelper.equals(that.fachDBHelper) : that.fachDBHelper != null)
+            return false;
+        return faecherListAdapter != null ? faecherListAdapter.equals(that.faecherListAdapter) : that.faecherListAdapter == null;
     }
 
     @Override
@@ -218,7 +222,8 @@ public class MainActivity extends AppCompatActivity {
         result = 31 * result + (fach != null ? fach.hashCode() : 0);
         result = 31 * result + (intent != null ? intent.hashCode() : 0);
         result = 31 * result + (listView != null ? listView.hashCode() : 0);
-        result = 31 * result + (arrayAdapter != null ? arrayAdapter.hashCode() : 0);
+        result = 31 * result + (fachDBHelper != null ? fachDBHelper.hashCode() : 0);
+        result = 31 * result + (faecherListAdapter != null ? faecherListAdapter.hashCode() : 0);
         return result;
     }
 
@@ -229,7 +234,8 @@ public class MainActivity extends AppCompatActivity {
                 ", fach='" + fach + '\'' +
                 ", intent=" + intent +
                 ", listView=" + listView +
-                ", arrayAdapter=" + arrayAdapter +
+                ", fachDBHelper=" + fachDBHelper +
+                ", faecherListAdapter=" + faecherListAdapter +
                 '}';
     }
 }

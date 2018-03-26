@@ -27,7 +27,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     private ArrayAdapter<FaecherEntry> arrayAdapter;
     private ArrayList<FaecherEntry> faecher;
     private ArrayList<String> ausgewaehlteFaecher, vonMainActivity;
-    private Intent intent;
+   // private Intent intent;
     private FachDBHelper fachDBHelper;
     private EditText et_fachHinzufuegen;
 
@@ -47,10 +47,10 @@ public class FaecherAuswahl extends AppCompatActivity {
         fachDBHelper = new FachDBHelper(getBaseContext());
 
         // Intent holen
-        intent = getIntent();
+    //    intent = getIntent();
 
         // Array Liste von den Fächern holen, damit diese nicht mehr in der Liste zum hinzufügen der Fächer erscheinen
-        vonMainActivity = intent.getStringArrayListExtra("ausgewaehlteFaecher");
+     //   vonMainActivity = intent.getStringArrayListExtra("ausgewaehlteFaecher");
         // List View wird hinzugefügt
         listView = findViewById(R.id.lv_faecher);
 //        faecher.add("Mathe");
@@ -127,13 +127,13 @@ public class FaecherAuswahl extends AppCompatActivity {
 
     //todo nach Datenbankanschluss löschen
     // Array mit ausgewählten Fächern an MainActivity.java übergeben und FaecherAuswahl.java wird geschlossen -> zurück zu MainActivity.java
-    public void speichern() {
-        this.intent = new Intent();
-        intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
-        setResult(RESULT_OK, intent);
-        // todo finisch nach button Fertig Menüpunkt
-        finish();
-    }
+  //  public void speichern() {
+    //    this.intent = new Intent();
+    //    intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
+    //    setResult(RESULT_OK, intent);
+
+   //     finish();
+   // }
 
     // Menü hinzufügen in Leiste oben rechts
     @Override
@@ -148,8 +148,8 @@ public class FaecherAuswahl extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.fertig:
-                speichern();
                 faecherAlsTabelleInDatenbankSchreiben();
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -210,7 +210,9 @@ public class FaecherAuswahl extends AppCompatActivity {
             return false;
         if (vonMainActivity != null ? !vonMainActivity.equals(that.vonMainActivity) : that.vonMainActivity != null)
             return false;
-        return intent != null ? intent.equals(that.intent) : that.intent == null;
+        if (fachDBHelper != null ? !fachDBHelper.equals(that.fachDBHelper) : that.fachDBHelper != null)
+            return false;
+        return et_fachHinzufuegen != null ? et_fachHinzufuegen.equals(that.et_fachHinzufuegen) : that.et_fachHinzufuegen == null;
     }
 
     @Override
@@ -220,7 +222,8 @@ public class FaecherAuswahl extends AppCompatActivity {
         result = 31 * result + (faecher != null ? faecher.hashCode() : 0);
         result = 31 * result + (ausgewaehlteFaecher != null ? ausgewaehlteFaecher.hashCode() : 0);
         result = 31 * result + (vonMainActivity != null ? vonMainActivity.hashCode() : 0);
-        result = 31 * result + (intent != null ? intent.hashCode() : 0);
+        result = 31 * result + (fachDBHelper != null ? fachDBHelper.hashCode() : 0);
+        result = 31 * result + (et_fachHinzufuegen != null ? et_fachHinzufuegen.hashCode() : 0);
         return result;
     }
 
@@ -232,7 +235,8 @@ public class FaecherAuswahl extends AppCompatActivity {
                 ", faecher=" + faecher +
                 ", ausgewaehlteFaecher=" + ausgewaehlteFaecher +
                 ", vonMainActivity=" + vonMainActivity +
-                ", intent=" + intent +
+                ", fachDBHelper=" + fachDBHelper +
+                ", et_fachHinzufuegen=" + et_fachHinzufuegen +
                 '}';
     }
 }
