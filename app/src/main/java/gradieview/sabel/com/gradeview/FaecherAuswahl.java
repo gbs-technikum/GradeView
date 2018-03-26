@@ -1,7 +1,6 @@
 package gradieview.sabel.com.gradeview;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +40,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faecher_auswahl);
+        setTitle("Fächerauswahl");
         et_fachHinzufuegen = findViewById(R.id.et_fachHinzufuegen);
 
         //Datenbank erstellen
@@ -56,7 +56,7 @@ public class FaecherAuswahl extends AppCompatActivity {
 //        faecher.add("Mathe");
 
 
-        //Todo Alle Fächer noch hinzufügen
+
         // Methode zum Fächer hinzufügen
         faecherHinzufuegen();
         // Fächer werden verglichen, damit nicht alle hinzugefügt werden
@@ -125,15 +125,6 @@ public class FaecherAuswahl extends AppCompatActivity {
 
     }
 
-    //todo nach Datenbankanschluss löschen
-    // Array mit ausgewählten Fächern an MainActivity.java übergeben und FaecherAuswahl.java wird geschlossen -> zurück zu MainActivity.java
-  //  public void speichern() {
-    //    this.intent = new Intent();
-    //    intent.putStringArrayListExtra("listeFaecher", ausgewaehlteFaecher);
-    //    setResult(RESULT_OK, intent);
-
-   //     finish();
-   // }
 
     // Menü hinzufügen in Leiste oben rechts
     @Override
@@ -163,7 +154,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     }
 
 
-    //Todo alle Fächer hinzufügen
+
     // Fächer werden hinzugefügt
     public void faecherHinzufuegen() {
         fachDBHelper.leseRechtDatenbank();
@@ -174,24 +165,6 @@ public class FaecherAuswahl extends AppCompatActivity {
         // Array zur ListView hinzufügen
         listView.setAdapter(arrayAdapter);
 
-    }
-
-    // Todo nach Datenbankanschluss löschen
-    // Fächer vergleich damit nicht wieder alle Fächer hinzugefügt werden
-    public void faecherVergleich(ArrayList<String> vonMainActivity, ArrayList<String> vonFaecherAuswahl) {
-        System.out.println(vonMainActivity);
-        System.out.println(vonFaecherAuswahl);
-        if (vonMainActivity != null || vonFaecherAuswahl != null) {
-            for (int i = 0; i < vonMainActivity.size(); i++) {
-                System.out.println("äußereSchleife");
-                for (int j = 0; j < vonFaecherAuswahl.size(); j++) {
-                    System.out.println("InnereSchleife");
-                    if (vonMainActivity.get(i).equals(vonFaecherAuswahl.get(j))) {
-                        faecher.remove(j);
-                    }
-                }
-            }
-        }
     }
 
     @Override

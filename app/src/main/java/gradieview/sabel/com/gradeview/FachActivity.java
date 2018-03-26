@@ -34,6 +34,7 @@ public class FachActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fach);
         Intent intent = getIntent();
         fachname = intent.getStringExtra("fachname");
+        setTitle(fachname);
 
         buttonSAplus = findViewById(R.id.btnSAplus);
 
@@ -87,19 +88,8 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-//        lv_SANoten.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                arrayAdapter.remove(arrayAdapter.getItem(position));
-//
-//                arrayAdapter.notifyDataSetChanged();
-//            }
-//        });
-
 
         // Noten löschen
-        // Todo Tabelle löschen und neu schreiben
         lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

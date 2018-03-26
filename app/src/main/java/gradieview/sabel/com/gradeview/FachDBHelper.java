@@ -59,11 +59,6 @@ public class FachDBHelper extends SQLiteOpenHelper {
         faecherEntry = new FaecherEntry("Datenbanken");
         db.execSQL("INSERT INTO " + FachContract.FachEntry.TABLE_FAECHERLISTE + " VALUES ('" + faecherEntry.getId() + "', '" + faecherEntry.getFach() + "'," + faecherEntry.getAusgewaehlt() + ")");
 
-        // this.insertFachToFaecherliste(new FaecherEntry("Mathe"));
-        // this.insertFachToFaecherliste(new FaecherEntry("Deutsch"));
-        //insertFachToFaecherliste(new FaecherEntry("Englisch"));
-        // this.insertFachToFaecherliste(new FaecherEntry("Programmieren"));
-        // this.insertFachToFaecherliste(new FaecherEntry("Datenbanken"));
     }
 
 

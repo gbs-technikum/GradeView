@@ -17,9 +17,6 @@ public final class FachContract {
 
 
 
-        //Todo evtl. FachActivity anders holen
-
-
         private static String faecherliste = "Faecherliste";
 
 
