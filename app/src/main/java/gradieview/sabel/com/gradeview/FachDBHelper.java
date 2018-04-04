@@ -108,9 +108,10 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     int note = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.SCHULAUFGABE));
                     String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    if (note != 0){
                     NotenEntry notenEntry = new NotenEntry(note);
                     notenEntry.setId(id);
-                    list.add(notenEntry);
+                    list.add(notenEntry);}
                 }
             }
             cursor.close();
@@ -133,9 +134,10 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     int note = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.KURZARBEIT));
                     String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    if (note != 0){
                     NotenEntry notenEntry = new NotenEntry(note);
                     notenEntry.setId(id);
-                    list.add(notenEntry);
+                    list.add(notenEntry);}
                 }
             }
             cursor.close();
