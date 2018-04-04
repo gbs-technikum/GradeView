@@ -114,7 +114,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
                     list.add(notenEntry);}
                 }
             }
-            cursor.close();
+            if(cursor != null) {
+                cursor.close();
+            }
         }
         return list;
     }
@@ -140,7 +142,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
                     list.add(notenEntry);}
                 }
             }
-            cursor.close();
+            if(cursor != null) {
+                cursor.close();
+            }
         }
         return list;
     }
@@ -171,7 +175,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 String s = cursor.getString(cursor.getColumnIndex("name"));
                 itemIds.add(s);
             }
-            cursor.close();
+            if(cursor != null) {
+                cursor.close();
+            }
             return itemIds;
         }
         return null;
@@ -200,7 +206,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 }
             }
         }
-        cursor.close();
+        if(cursor != null) {
+            cursor.close();
+        }
         return list;
     }
 
@@ -227,7 +235,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 }
             }
         }
-        cursor.close();
+        if(cursor != null) {
+            cursor.close();
+        }
         return list;
     }
 
