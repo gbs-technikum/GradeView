@@ -86,6 +86,12 @@ public class FachDBHelper extends SQLiteOpenHelper {
         values.put(FachContract.FachEntry.SCHULAUFGABE, notenEntry.getNote());
         this.db.insert(fachname, null, values);
     }
+    public void insertNotenKA(String fachname, NotenEntry notenEntry) {
+        ContentValues values = new ContentValues();
+        values.put(FachContract.FachEntry._ID, notenEntry.getId());
+        values.put(FachContract.FachEntry.KURZARBEIT, notenEntry.getNote());
+        this.db.insert(fachname,null, values);
+    }
 
     public List<NotenEntry> readAllFromFach(String fachname) {
         List<NotenEntry> list = null;
@@ -102,9 +108,36 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 while (cursor.moveToNext()) {
                     int note = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.SCHULAUFGABE));
                     String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    if (note != 0){
                     NotenEntry notenEntry = new NotenEntry(note);
                     notenEntry.setId(id);
-                    list.add(notenEntry);
+                    list.add(notenEntry);}
+                }
+            }
+            cursor.close();
+        }
+        return list;
+    }
+
+    public List<NotenEntry> readAllFromFachKA(String fachname) {
+        List<NotenEntry> list = null;
+        String[] projection = {
+                FachContract.FachEntry._ID,
+                FachContract.FachEntry.SCHULAUFGABE,
+                FachContract.FachEntry.KURZARBEIT,
+                FachContract.FachEntry.MÜNDLICH
+        };
+        if (!fachname.equals("Faecherliste")) {
+            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                list = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    int note = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.KURZARBEIT));
+                    String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    if (note != 0){
+                    NotenEntry notenEntry = new NotenEntry(note);
+                    notenEntry.setId(id);
+                    list.add(notenEntry);}
                 }
             }
             cursor.close();
