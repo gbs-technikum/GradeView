@@ -93,7 +93,14 @@ public class FachDBHelper extends SQLiteOpenHelper {
         this.db.insert(fachname,null, values);
     }
 
-    public List<NotenEntry> readAllFromFach(String fachname) {
+    public void insertNotenMUE(String fachname, NotenEntry notenEntry) {
+        ContentValues values = new ContentValues();
+        values.put(FachContract.FachEntry._ID, notenEntry.getId());
+        values.put(FachContract.FachEntry.MÜNDLICH, notenEntry.getNote());
+        this.db.insert(fachname,null, values);
+    }
+
+    public List<NotenEntry> readAllFromFachSA(String fachname) {
         List<NotenEntry> list = null;
         String[] projection = {
                 FachContract.FachEntry._ID,
@@ -140,6 +147,34 @@ public class FachDBHelper extends SQLiteOpenHelper {
                     NotenEntry notenEntry = new NotenEntry(note);
                     notenEntry.setId(id);
                     list.add(notenEntry);}
+                }
+            }
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    public List<NotenEntry> readAllFromFachMUE(String fachname) {
+        List<NotenEntry> list = null;
+        String[] projection = {
+                FachContract.FachEntry._ID,
+                FachContract.FachEntry.SCHULAUFGABE,
+                FachContract.FachEntry.KURZARBEIT,
+                FachContract.FachEntry.MÜNDLICH
+        };
+        if (!fachname.equals("Faecherliste")) {
+            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                list = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    int note = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.MÜNDLICH));
+                    String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
+                    if (note != 0){
+                        NotenEntry notenEntry = new NotenEntry(note);
+                        notenEntry.setId(id);
+                        list.add(notenEntry);}
                 }
             }
             if(cursor != null) {

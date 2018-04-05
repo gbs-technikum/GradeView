@@ -23,10 +23,10 @@ public class FachActivity extends AppCompatActivity {
 
     private static String fachname;
     private Button buttonSAplus, buttonKAplus, buttonMUEplus;
-    private EditText editTextSA, editTextKA;
+    private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
-    private ListView lv_SANoten, lv_KANoten;
-    private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA;
+    private ListView lv_SANoten, lv_KANoten, lv_MUENoten;
+    private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +42,19 @@ public class FachActivity extends AppCompatActivity {
 
         editTextSA = findViewById(R.id.editTextSA);
         editTextKA = findViewById(R.id.editTextKA);
+        editTextMUE= findViewById(R.id.editTextMUE);
 
         lv_SANoten = findViewById(R.id.lv_SANoten);
         lv_KANoten = findViewById(R.id.lv_KANoten);
+        lv_MUENoten = findViewById(R.id.lv_MUENoten);
 
         arrayAdapterSA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         arrayAdapterKA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        arrayAdapterMUE = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
         lv_SANoten.setAdapter(arrayAdapterSA);
         lv_KANoten.setAdapter(arrayAdapterKA);
+        lv_MUENoten.setAdapter(arrayAdapterMUE);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
@@ -71,6 +75,14 @@ public class FachActivity extends AppCompatActivity {
         }
         lv_KANoten.setVisibility(View.VISIBLE);
 
+        List<NotenEntry> listMUE = notenAusDatenbankLesenMUE();
+        if (listKA != null) {
+            for (NotenEntry notenEntry : listMUE) {
+                arrayAdapterMUE.add(notenEntry);
+            }
+        }
+        lv_MUENoten.setVisibility(View.VISIBLE);
+
 
         buttonSAplus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +102,16 @@ public class FachActivity extends AppCompatActivity {
                 editTextKA.requestFocus();
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.showSoftInput(editTextKA, 0);
+            }
+        });
+
+        buttonMUEplus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextMUE.setVisibility(View.VISIBLE);
+                editTextMUE.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(editTextMUE, 0);
             }
         });
 
@@ -135,6 +157,27 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
+        editTextMUE.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER) {
+                    String note = editTextMUE.getText().toString();
+                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                    notenInDatenbankSchreibenMUE(notenEntry);
+                    arrayAdapterMUE.add(notenEntry);
+                    arrayAdapterMUE.notifyDataSetChanged();
+                    lv_MUENoten.setVisibility(View.VISIBLE);
+                    editTextMUE.setVisibility(View.GONE);
+                    editTextMUE.setText("");
+                    //eingabefeld schließen
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         // Noten löschen
         lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -165,18 +208,38 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
+        lv_MUENoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                NotenEntry notenEntry = arrayAdapterMUE.getItem(position);
+                arrayAdapterMUE.remove(notenEntry);
+                arrayAdapterMUE.notifyDataSetChanged();
+                if (position >= 0) {
+                    fachDBHelper.getWritableDatabase();
+                    return fachDBHelper.deleteNote(fachname, notenEntry);
+                }
+                return false;
+            }
+        });
+
     }
 
     // Noten aus Datenbank lesen
     private List<NotenEntry> notenAusDatenbankLesen() {
         fachDBHelper.leseRechtDatenbank();
-        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFach(getFachname());
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachSA(getFachname());
         return notenEntries;
     }
 
     private List<NotenEntry> notenAusDatenbankLesenKA() {
         fachDBHelper.leseRechtDatenbank();
         List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachKA(getFachname());
+        return notenEntries;
+    }
+
+    private List<NotenEntry> notenAusDatenbankLesenMUE() {
+        fachDBHelper.leseRechtDatenbank();
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachMUE(getFachname());
         return notenEntries;
     }
 
@@ -189,6 +252,11 @@ public class FachActivity extends AppCompatActivity {
     private void notenInDatenbankSchreibenKA(NotenEntry notenEntry) {
         fachDBHelper.schreibRechteDatenbank();
         fachDBHelper.insertNotenKA(fachname, notenEntry);
+    }
+
+    private void notenInDatenbankSchreibenMUE(NotenEntry notenEntry) {
+        fachDBHelper.schreibRechteDatenbank();
+        fachDBHelper.insertNotenMUE(fachname, notenEntry);
     }
 
     @Override
