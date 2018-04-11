@@ -2,6 +2,7 @@ package gradieview.sabel.com.gradeview;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
