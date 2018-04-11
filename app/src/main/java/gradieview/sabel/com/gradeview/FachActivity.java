@@ -22,11 +22,11 @@ import java.util.List;
 public class FachActivity extends AppCompatActivity {
 
     private static String fachname;
-    private Button buttonSAplus;
-    private EditText editTextSA;
+    private Button buttonSAplus, buttonKAplus, buttonMUEplus;
+    private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
-    private ListView lv_SANoten;
-    private ArrayAdapter<NotenEntry> arrayAdapter;
+    private ListView lv_SANoten, lv_KANoten, lv_MUENoten;
+    private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +34,54 @@ public class FachActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fach);
         Intent intent = getIntent();
         fachname = intent.getStringExtra("fachname");
+        setTitle(fachname);
 
         buttonSAplus = findViewById(R.id.btnSAplus);
+        buttonKAplus = findViewById(R.id.btnKAplus);
+        buttonMUEplus = findViewById(R.id.btnMUEplus);
 
         editTextSA = findViewById(R.id.editTextSA);
+        editTextKA = findViewById(R.id.editTextKA);
+        editTextMUE= findViewById(R.id.editTextMUE);
 
         lv_SANoten = findViewById(R.id.lv_SANoten);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        lv_SANoten.setAdapter(arrayAdapter);
+        lv_KANoten = findViewById(R.id.lv_KANoten);
+        lv_MUENoten = findViewById(R.id.lv_MUENoten);
+
+        arrayAdapterSA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        arrayAdapterKA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        arrayAdapterMUE = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+
+        lv_SANoten.setAdapter(arrayAdapterSA);
+        lv_KANoten.setAdapter(arrayAdapterKA);
+        lv_MUENoten.setAdapter(arrayAdapterMUE);
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
 
-        List<NotenEntry> list = notenAusDatenbankLesen();
-        if (list != null) {
-            for (NotenEntry notenEntry : list) {
-                arrayAdapter.add(notenEntry);
+        List<NotenEntry> listSA = notenAusDatenbankLesen();
+        if (listSA != null) {
+            for (NotenEntry notenEntry : listSA) {
+                arrayAdapterSA.add(notenEntry);
             }
         }
         lv_SANoten.setVisibility(View.VISIBLE);
+
+        List<NotenEntry> listKA = notenAusDatenbankLesenKA();
+        if (listKA != null) {
+            for (NotenEntry notenEntry : listKA) {
+                arrayAdapterKA.add(notenEntry);
+            }
+        }
+        lv_KANoten.setVisibility(View.VISIBLE);
+
+        List<NotenEntry> listMUE = notenAusDatenbankLesenMUE();
+        if (listKA != null) {
+            for (NotenEntry notenEntry : listMUE) {
+                arrayAdapterMUE.add(notenEntry);
+            }
+        }
+        lv_MUENoten.setVisibility(View.VISIBLE);
 
 
         buttonSAplus.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +95,26 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
+        buttonKAplus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextKA.setVisibility(View.VISIBLE);
+                editTextKA.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(editTextKA, 0);
+            }
+        });
+
+        buttonMUEplus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextMUE.setVisibility(View.VISIBLE);
+                editTextMUE.requestFocus();
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(editTextMUE, 0);
+            }
+        });
+
         editTextSA.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -73,8 +122,8 @@ public class FachActivity extends AppCompatActivity {
                     String note = editTextSA.getText().toString();
                     NotenEntry notenEntry = new NotenEntry(new Integer(note));
                     notenInDatenbankSchreiben(notenEntry);
-                    arrayAdapter.add(notenEntry);
-                    arrayAdapter.notifyDataSetChanged();
+                    arrayAdapterSA.add(notenEntry);
+                    arrayAdapterSA.notifyDataSetChanged();
                     lv_SANoten.setVisibility(View.VISIBLE);
                     editTextSA.setVisibility(View.GONE);
                     editTextSA.setText("");
@@ -87,25 +136,84 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-//        lv_SANoten.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                arrayAdapter.remove(arrayAdapter.getItem(position));
-//
-//                arrayAdapter.notifyDataSetChanged();
-//            }
-//        });
+        editTextKA.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER) {
+                    String note = editTextKA.getText().toString();
+                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                    notenInDatenbankSchreibenKA(notenEntry);
+                    arrayAdapterKA.add(notenEntry);
+                    arrayAdapterKA.notifyDataSetChanged();
+                    lv_KANoten.setVisibility(View.VISIBLE);
+                    editTextKA.setVisibility(View.GONE);
+                    editTextKA.setText("");
+                    //eingabefeld schließen
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        editTextMUE.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_ENTER) {
+                    String note = editTextMUE.getText().toString();
+                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                    notenInDatenbankSchreibenMUE(notenEntry);
+                    arrayAdapterMUE.add(notenEntry);
+                    arrayAdapterMUE.notifyDataSetChanged();
+                    lv_MUENoten.setVisibility(View.VISIBLE);
+                    editTextMUE.setVisibility(View.GONE);
+                    editTextMUE.setText("");
+                    //eingabefeld schließen
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
         // Noten löschen
-        // Todo Tabelle löschen und neu schreiben
         lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                NotenEntry notenEntry = arrayAdapter.getItem(position);
-                arrayAdapter.remove(notenEntry);
-                arrayAdapter.notifyDataSetChanged();
+                NotenEntry notenEntry = arrayAdapterSA.getItem(position);
+                arrayAdapterSA.remove(notenEntry);
+                arrayAdapterSA.notifyDataSetChanged();
+                if (position >= 0) {
+                    fachDBHelper.getWritableDatabase();
+                    return fachDBHelper.deleteNote(fachname, notenEntry);
+                }
+                return false;
+            }
+        });
+
+        lv_KANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                NotenEntry notenEntry = arrayAdapterKA.getItem(position);
+                arrayAdapterKA.remove(notenEntry);
+                arrayAdapterKA.notifyDataSetChanged();
+                if (position >= 0) {
+                    fachDBHelper.getWritableDatabase();
+                    return fachDBHelper.deleteNote(fachname, notenEntry);
+                }
+                return false;
+            }
+        });
+
+        lv_MUENoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                NotenEntry notenEntry = arrayAdapterMUE.getItem(position);
+                arrayAdapterMUE.remove(notenEntry);
+                arrayAdapterMUE.notifyDataSetChanged();
                 if (position >= 0) {
                     fachDBHelper.getWritableDatabase();
                     return fachDBHelper.deleteNote(fachname, notenEntry);
@@ -116,10 +224,39 @@ public class FachActivity extends AppCompatActivity {
 
     }
 
+    // Noten aus Datenbank lesen
     private List<NotenEntry> notenAusDatenbankLesen() {
-        fachDBHelper.readDatabase();
-        List<NotenEntry> notenEntries = fachDBHelper.readAll(getFachname());
+        fachDBHelper.leseRechtDatenbank();
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachSA(getFachname());
         return notenEntries;
+    }
+
+    private List<NotenEntry> notenAusDatenbankLesenKA() {
+        fachDBHelper.leseRechtDatenbank();
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachKA(getFachname());
+        return notenEntries;
+    }
+
+    private List<NotenEntry> notenAusDatenbankLesenMUE() {
+        fachDBHelper.leseRechtDatenbank();
+        List<NotenEntry> notenEntries = fachDBHelper.readAllFromFachMUE(getFachname());
+        return notenEntries;
+    }
+
+    // Noten in Datenbank schreiben
+    private void notenInDatenbankSchreiben(NotenEntry notenEntry) {
+        fachDBHelper.schreibRechteDatenbank();
+        fachDBHelper.insertNoten(fachname, notenEntry);
+    }
+
+    private void notenInDatenbankSchreibenKA(NotenEntry notenEntry) {
+        fachDBHelper.schreibRechteDatenbank();
+        fachDBHelper.insertNotenKA(fachname, notenEntry);
+    }
+
+    private void notenInDatenbankSchreibenMUE(NotenEntry notenEntry) {
+        fachDBHelper.schreibRechteDatenbank();
+        fachDBHelper.insertNotenMUE(fachname, notenEntry);
     }
 
     @Override
@@ -130,12 +267,6 @@ public class FachActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // Noten in Datenbank schreiben
-    private void notenInDatenbankSchreiben(NotenEntry notenEntry) {
-        fachDBHelper.writeDatabase();
-        fachDBHelper.insert(fachname, notenEntry);
     }
 
     // Menü hinzufügen in Leiste oben rechts

@@ -1,5 +1,6 @@
 package gradieview.sabel.com.gradeview;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,14 +18,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> ausgewaehlteFaecher;
+    private ArrayList<FaecherEntry> ausgewaehlteFaecher;
     private String fach;
     private Intent intent;
     private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
+ //   private ArrayAdapter<String> arrayAdapter;
     private FachDBHelper fachDBHelper;
     private FaecherListAdapter faecherListAdapter;
-    AlertDialog.Builder builder;
 
 
     public MainActivity() {
@@ -36,14 +35,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Todo Darf nur aufgerufen werden wenn man aus FaecherAuswahl.class kommt
+
         faecherAusDBlesenUndInLVhinzufuegen();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (fachDBHelper!= null){
+        if (fachDBHelper != null) {
             fachDBHelper.close();
         }
     }
@@ -55,17 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
         fachDBHelper = new FachDBHelper(getBaseContext());
 
-        this.builder = new AlertDialog.Builder(this);
-
-
         // ListView
         listView = findViewById(R.id.lv_faecher);
 
+        faecherAusDBlesenUndInLVhinzufuegen();
 //        // String Array der ausgewählten Fächer
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 
         // Array zur ListView hinzufügen
-        listView.setAdapter(arrayAdapter);
+        //       listView.setAdapter(arrayAdapter);
 
 
         // Beim Clicken eines Items der ListView
@@ -83,39 +80,70 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                builder.setMessage("Wollen Sie das Fach wirklich löschen?");
-                builder.setTitle("Warnung");
-                AlertDialog dialog = builder.create();
-
-                String eintrag = arrayAdapter.getItem(position);
-                arrayAdapter.remove(eintrag);
-                arrayAdapter.notifyDataSetChanged();
-                fachDBHelper.getWritableDatabase();
-                fachDBHelper.deleteFach(eintrag);
-
-
-                return false;
+                FaecherEntry faecherEntry =(FaecherEntry) faecherListAdapter.getItem(position);
+                //String eintrag = faecherEntry.getFach();
+                loescheFachAusListe(faecherEntry);
+                return true;
             }
         });
 
-        faecherAusDBlesenUndInLVhinzufuegen();
+    }
+
+
+
+    private void loescheFachAusListe(final FaecherEntry faecherEntry) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Wollen Sie das Fach wirklich löschen?");
+        builder.setTitle("Warnung");
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                faecherListAdapter.deletItem(faecherEntry);
+                faecherListAdapter.notifyDataSetChanged();
+
+                //arrayAdapter.remove(eintrag);
+                //arrayAdapter.notifyDataSetChanged();
+                fachDBHelper.getWritableDatabase();
+                faecherEntry.setAusgewaehlt(FaecherEntry.FALSE);
+                fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
+                fachDBHelper.deleteFach(faecherEntry.getFach());
+                //dialog.show();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     public void faecherAusDBlesenUndInLVhinzufuegen() {
-        fachDBHelper.readDatabase();
+        fachDBHelper.leseRechtDatenbank();
 //        Cursor cursor = database.rawQuery("SELECT name FROM sqlite_master WHERE type='table';", null);
-        List<String> itemIds = fachDBHelper.readFaecher();
+        List<FaecherEntry> itemIds = fachDBHelper.readFaecherlisteInUse();
 //        while (cursor.moveToNext()) {
 //            String s = cursor.getString(cursor.getColumnIndex("name"));
 //            itemIds.add(s);
 //        }
 //        cursor.close();
 
-        ausgewaehlteFaecher = (ArrayList<String>) itemIds;
+        ausgewaehlteFaecher = (ArrayList<FaecherEntry>) itemIds;
+
         faecherListAdapter = new FaecherListAdapter(this, ausgewaehlteFaecher);
 //        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ausgewaehlteFaecher);
 //        listView.setAdapter(arrayAdapter);
         listView.setAdapter(faecherListAdapter);
+        for (FaecherEntry faecherEntry : ausgewaehlteFaecher) {
+            if ("android_metadata".equals(faecherEntry.getFach()) || "Faecherliste".equals(faecherEntry.getFach())){
+           // faecherListAdapter.deletItem(faecherEntry);
+        }}
+
+      //  faecherListAdapter.deletItem("android_metadata");
+      //  faecherListAdapter.deletItem("Faecherliste");
+        faecherListAdapter.notifyDataSetChanged();
 //        arrayAdapter.remove("android_metadata");
 //        arrayAdapter.remove("Test");
 
@@ -146,9 +174,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fachHinzufuegen:
                 intent = new Intent(this, FaecherAuswahl.class);
-                intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
-                setResult(RESULT_OK, intent);
-                startActivityForResult(intent, 1);
+               // intent.putStringArrayListExtra("ausgewaehlteFaecher", ausgewaehlteFaecher);
+               // setResult(RESULT_OK, intent);
+               // startActivityForResult(intent, 1);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -167,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,7 +210,9 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null ? !intent.equals(that.intent) : that.intent != null) return false;
         if (listView != null ? !listView.equals(that.listView) : that.listView != null)
             return false;
-        return arrayAdapter != null ? arrayAdapter.equals(that.arrayAdapter) : that.arrayAdapter == null;
+        if (fachDBHelper != null ? !fachDBHelper.equals(that.fachDBHelper) : that.fachDBHelper != null)
+            return false;
+        return faecherListAdapter != null ? faecherListAdapter.equals(that.faecherListAdapter) : that.faecherListAdapter == null;
     }
 
     @Override
@@ -189,7 +221,8 @@ public class MainActivity extends AppCompatActivity {
         result = 31 * result + (fach != null ? fach.hashCode() : 0);
         result = 31 * result + (intent != null ? intent.hashCode() : 0);
         result = 31 * result + (listView != null ? listView.hashCode() : 0);
-        result = 31 * result + (arrayAdapter != null ? arrayAdapter.hashCode() : 0);
+        result = 31 * result + (fachDBHelper != null ? fachDBHelper.hashCode() : 0);
+        result = 31 * result + (faecherListAdapter != null ? faecherListAdapter.hashCode() : 0);
         return result;
     }
 
@@ -200,7 +233,8 @@ public class MainActivity extends AppCompatActivity {
                 ", fach='" + fach + '\'' +
                 ", intent=" + intent +
                 ", listView=" + listView +
-                ", arrayAdapter=" + arrayAdapter +
+                ", fachDBHelper=" + fachDBHelper +
+                ", faecherListAdapter=" + faecherListAdapter +
                 '}';
     }
 }

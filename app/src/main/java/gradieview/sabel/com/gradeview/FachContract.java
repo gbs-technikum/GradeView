@@ -17,16 +17,15 @@ public final class FachContract {
 
 
 
-        //Todo evtl. FachActivity anders holen
+        private static String faecherliste = "Faecherliste";
 
 
-        private static String tabellenName = "Test";
-
-
-        public static String TABLE_NAME = tabellenName;
-        public static final String COLUMN_NAME_TITLE_1 = "Schulaufgabe";
-        public static final String COLUMN_NAME_TITLE_2 = "Kurzarbeit";
-        public static final String COLUMN_NAME_TITLE_3 = "Mündlich";
+        public static String TABLE_FAECHERLISTE = faecherliste;
+        public static final String SCHULAUFGABE = "Schulaufgabe";
+        public static final String KURZARBEIT = "Kurzarbeit";
+        public static final String MÜNDLICH = "Mündlich";
+        public static final String FACH = "Fach";
+        public static final String AUSGEWAEHLT = "Ausgewaehlt";
 
 
     }
