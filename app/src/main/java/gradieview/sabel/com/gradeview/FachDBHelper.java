@@ -117,9 +117,12 @@ public class FachDBHelper extends SQLiteOpenHelper {
                     int noteMUE = cursor.getInt(cursor.getColumnIndex(FachContract.FachEntry.MÜNDLICH));
                     String id = cursor.getString(cursor.getColumnIndex(FachContract.FachEntry._ID));
                     if (noteSA != 0){
-                        NotenEntry notenEntry = new NotenEntry(noteSA);
-                        notenEntry.setId(id);
-                        list.add(notenEntry);}
+                        for (int i = 0; i <= 1; i++) {
+                            NotenEntry notenEntry = new NotenEntry(noteSA);
+                            notenEntry.setId(id);
+                            list.add(notenEntry);}
+                        }
+
                     if (noteKA != 0){
                         NotenEntry notenEntry = new NotenEntry(noteKA);
                         notenEntry.setId(id);
