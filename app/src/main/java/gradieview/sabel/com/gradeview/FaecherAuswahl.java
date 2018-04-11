@@ -3,6 +3,9 @@ package gradieview.sabel.com.gradeview;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -68,12 +72,28 @@ public class FaecherAuswahl extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FaecherEntry faecherEntry = faecher.get(position);
-                arrayAdapter.remove(faecherEntry);
-                arrayAdapter.notifyDataSetChanged();
-                faecherEntry.setAusgewaehlt(FaecherEntry.TRUE);
-                fachDBHelper.schreibRechteDatenbank();
-                fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
-                ausgewaehlteFaecher.add(faecherEntry.getFach());
+                if (faecherEntry.getAusgewaehlt() == FaecherEntry.FALSE){
+                    view.setBackgroundColor(Color.GRAY);
+                    faecherEntry.setAusgewaehlt(FaecherEntry.TRUE);
+                    arrayAdapter.notifyDataSetChanged();
+
+                    fachDBHelper.schreibRechteDatenbank();
+                    fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
+                    ausgewaehlteFaecher.add(faecherEntry.getFach());
+                }
+                else{
+                    view.setBackgroundColor(Color.WHITE);
+                    faecherEntry.setAusgewaehlt(FaecherEntry.FALSE);
+                    arrayAdapter.notifyDataSetChanged();
+                    fachDBHelper.schreibRechteDatenbank();
+                    fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
+                    ausgewaehlteFaecher.remove(faecherEntry.getFach());
+                }
+
+
+
+                //arrayAdapter.remove(faecherEntry);
+
             }
         });
 
