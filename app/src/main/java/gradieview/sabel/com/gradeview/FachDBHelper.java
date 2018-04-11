@@ -340,4 +340,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
         values.put(FachContract.FachEntry.AUSGEWAEHLT, ausgewaehlt);
         db.update(FachContract.FachEntry.TABLE_FAECHERLISTE, values, FachContract.FachEntry._ID +"=?", whereArgs);
     }
+
+    public boolean removeFachFromFaecherliste(FaecherEntry faecherEntry){
+        db.execSQL("DELETE FROM " + FachContract.FachEntry.TABLE_FAECHERLISTE + " WHERE " + FachContract.FachEntry._ID + " = '" + faecherEntry.getId()+ "' ");
+        return true;
+    }
 }

@@ -1,12 +1,14 @@
 package gradieview.sabel.com.gradeview;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 public class FaecherAuswahl extends AppCompatActivity {
 
     private ListView listView;
+
     private ArrayAdapter<FaecherEntry> arrayAdapter;
     private ArrayList<FaecherEntry> faecher;
     private ArrayList<String> ausgewaehlteFaecher, vonMainActivity;
@@ -97,12 +100,6 @@ public class FaecherAuswahl extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return false;
-            }
-        });
 
         et_fachHinzufuegen.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -151,6 +148,38 @@ public class FaecherAuswahl extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                FaecherEntry faecherEntry = arrayAdapter.getItem(position);
+                loescheFachAusListe(faecherEntry);
+                return true;
+            }
+        });
+
+    }
+
+    private void loescheFachAusListe(final FaecherEntry faecherEntry) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Wollen Sie das Fach wirklich löschen?");
+        builder.setTitle("Warnung");
+        AlertDialog dialog = builder.create();
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        fachDBHelper.schreibRechteDatenbank();
+                        fachDBHelper.removeFachFromFaecherliste(faecherEntry);
+                        arrayAdapter.remove(faecherEntry);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 

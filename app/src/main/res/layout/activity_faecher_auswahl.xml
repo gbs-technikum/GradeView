@@ -4,98 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#666666"
     tools:context="gradieview.sabel.com.gradeview.FaecherAuswahl">
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_andwendungsentwicklung"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/andwendungsentwicklung"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_betriebspsychologie"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/betriebspsychologie"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_betriebssysteme"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/betriebssysteme"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_betriebswirtschaftlicheProzesse"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/betriebswirtschaftlicheProzesse"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_datenbanken"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/datenbanken"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_deutsch"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/deutsch"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_englisch"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/englisch"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_internetanwendungen"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/internetanwendungen"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_itil"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/itil"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_mathe"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/mathe"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/netzwerktechnik"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/netzwerktechnik"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/programmieren"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/programmieren"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/projektmanagement"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/projektmanagement"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/qualitaetsmanagement"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/qualitaetsmanagement"-->
-        <!--/>-->
-    <!--<Button-->
-        <!--android:id="@+id/softwaretechnik"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/softwaretechnik"-->
-        <!--/>-->
+
     <EditText
         android:id="@+id/et_fachHinzufuegen"
         android:inputType="text"
@@ -103,11 +15,20 @@
         android:layout_height="wrap_content"
         android:hint="Fach hinzufügen"
         android:singleLine="true"
-
+        android:layout_marginLeft="10dp"
+        android:background="#FFCC66"
         />
 
     <ListView
         android:id="@+id/lv_faecher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#FFCC66"
+        android:dividerHeight="10dp"
+        android:divider="#666666"
+        />
 </LinearLayout>
