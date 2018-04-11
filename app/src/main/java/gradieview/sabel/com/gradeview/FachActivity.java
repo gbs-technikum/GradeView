@@ -25,8 +25,9 @@ public class FachActivity extends AppCompatActivity {
     private Button buttonSAplus, buttonKAplus, buttonMUEplus;
     private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
-    private ListView lv_SANoten, lv_KANoten, lv_MUENoten;
+    private ListView lv_SANoten, lv_KANoten, lv_MUENoten, lv_Test;
     private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
+    private FachActivityAdapter fachActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,13 @@ public class FachActivity extends AppCompatActivity {
         lv_SANoten = findViewById(R.id.lv_SANoten);
         lv_KANoten = findViewById(R.id.lv_KANoten);
         lv_MUENoten = findViewById(R.id.lv_MUENoten);
+
+//        lv_Test = findViewById(R.id.lv_Test);
+//        fachActivityAdapter = new FachActivityAdapter(this, getFachname());
+//        lv_Test.setAdapter(fachActivityAdapter);
+//        fachActivityAdapter.notifyDataSetChanged();
+
+
 
         arrayAdapterSA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         arrayAdapterKA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
