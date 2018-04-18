@@ -36,6 +36,7 @@ public class FachActivity extends AppCompatActivity {
         Intent intent = getIntent();
         fachname = intent.getStringExtra("fachname");
         setTitle(fachname);
+        fachDBHelper = new FachDBHelper(getBaseContext());
 
         buttonSAplus = findViewById(R.id.btnSAplus);
         buttonKAplus = findViewById(R.id.btnKAplus);
@@ -49,10 +50,10 @@ public class FachActivity extends AppCompatActivity {
         lv_KANoten = findViewById(R.id.lv_KANoten);
         lv_MUENoten = findViewById(R.id.lv_MUENoten);
 
-//        lv_Test = findViewById(R.id.lv_Test);
-//        fachActivityAdapter = new FachActivityAdapter(this, getFachname());
-//        lv_Test.setAdapter(fachActivityAdapter);
-//        fachActivityAdapter.notifyDataSetChanged();
+        lv_Test = findViewById(R.id.lv_Test);
+        fachActivityAdapter = new FachActivityAdapter(this, "Schulaufgabe");
+        lv_Test.setAdapter(fachActivityAdapter);
+        fachActivityAdapter.notifyDataSetChanged();
 
 
 
@@ -64,7 +65,6 @@ public class FachActivity extends AppCompatActivity {
         lv_KANoten.setAdapter(arrayAdapterKA);
         lv_MUENoten.setAdapter(arrayAdapterMUE);
 
-        fachDBHelper = new FachDBHelper(getBaseContext());
 
 
         List<NotenEntry> listSA = notenAusDatenbankLesen();

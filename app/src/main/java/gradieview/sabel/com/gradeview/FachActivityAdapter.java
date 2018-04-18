@@ -21,23 +21,26 @@ import java.util.List;
 public class FachActivityAdapter extends BaseAdapter {
 
     private Context context;
-    private String fachname;
+    //private String fachname;
+//    private List<NotenEntry> notenEntries;
     ArrayAdapter<NotenEntry> arrayAdapter;
+    String notenart;
 
 
-    public FachActivityAdapter(Context context, String fachname) {
+    public FachActivityAdapter(Context context, String notenart) {
         this.context = context;
-        this.fachname = fachname;
+        this.notenart = notenart;
+//        this.notenEntries = notenEntries;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return notenart;
     }
 
     @Override
@@ -50,27 +53,29 @@ public class FachActivityAdapter extends BaseAdapter {
         View v = View.inflate(context, R.layout.noteneintrag_adapter, null);
         TextView tv_notenart = v.findViewById(R.id.tv_notenart);
         Button btn_plus = v.findViewById(R.id.btn_plus);
-        final EditText editText = v.findViewById(R.id.editText);
-        ListView lv_noten = v.findViewById(R.id.lv_Noten);
-        FachDBHelper fachDBHelper = new FachDBHelper(context);
-        fachDBHelper.leseRechtDatenbank();
+//        final EditText editText = v.findViewById(R.id.editText);
+//        ListView lv_noten = v.findViewById(R.id.lv_Noten);
+//        FachDBHelper fachDBHelper = new FachDBHelper(context);
+//        fachDBHelper.leseRechtDatenbank();
+//
+//        //ArrayList<NotenEntry> notenEntries = (ArrayList) fachDBHelper.readAllFromFachSA(fachname);
+        tv_notenart.setText(notenart);
 
-        ArrayList<NotenEntry> notenEntries = (ArrayList) fachDBHelper.readAllFromFachSA(fachname);
-        tv_notenart.setText("Schulaufgabe");
+//        btn_plus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                editText.setVisibility(View.VISIBLE);
+//                //eigabefeld öffnen
+//                editText.requestFocus();
+//                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputMethodManager.showSoftInput(editText, 0);
+//            }
+//        });
 
-        btn_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editText.setVisibility(View.VISIBLE);
-                //eigabefeld öffnen
-                editText.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(editText, 0);
-            }
-        });
-
-        arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, notenEntries);
-        lv_noten.setAdapter(arrayAdapter);
+//        arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, notenEntries);
+//        lv_noten.setAdapter(arrayAdapter);
         return v;
     }
+
+
 }
