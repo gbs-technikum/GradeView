@@ -140,17 +140,19 @@ public class FachActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
                     String note = editTextSA.getText().toString();
-                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
-                    notenInDatenbankSchreiben(notenEntry);
-                    arrayAdapterSA.add(notenEntry);
-                    arrayAdapterSA.notifyDataSetChanged();
-                    lv_SANoten.setVisibility(View.VISIBLE);
-                    editTextSA.setVisibility(View.GONE);
-                    editTextSA.setText("");
-                    //eingabefeld schließen
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
-                    return true;
+                    if (note != null && !(note.equals(""))) {
+                        NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                        notenInDatenbankSchreiben(notenEntry);
+                        arrayAdapterSA.add(notenEntry);
+                        arrayAdapterSA.notifyDataSetChanged();
+                        lv_SANoten.setVisibility(View.VISIBLE);
+                        editTextSA.setVisibility(View.GONE);
+                        editTextSA.setText("");
+                        //eingabefeld schließen
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -161,17 +163,19 @@ public class FachActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
                     String note = editTextKA.getText().toString();
-                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
-                    notenInDatenbankSchreibenKA(notenEntry);
-                    arrayAdapterKA.add(notenEntry);
-                    arrayAdapterKA.notifyDataSetChanged();
-                    lv_KANoten.setVisibility(View.VISIBLE);
-                    editTextKA.setVisibility(View.GONE);
-                    editTextKA.setText("");
-                    //eingabefeld schließen
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
-                    return true;
+                    if (note != null && !(note.equals(""))) {
+                        NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                        notenInDatenbankSchreibenKA(notenEntry);
+                        arrayAdapterKA.add(notenEntry);
+                        arrayAdapterKA.notifyDataSetChanged();
+                        lv_KANoten.setVisibility(View.VISIBLE);
+                        editTextKA.setVisibility(View.GONE);
+                        editTextKA.setText("");
+                        //eingabefeld schließen
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -182,22 +186,23 @@ public class FachActivity extends AppCompatActivity {
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
                     String note = editTextMUE.getText().toString();
-                    NotenEntry notenEntry = new NotenEntry(new Integer(note));
-                    notenInDatenbankSchreibenMUE(notenEntry);
-                    arrayAdapterMUE.add(notenEntry);
-                    arrayAdapterMUE.notifyDataSetChanged();
-                    lv_MUENoten.setVisibility(View.VISIBLE);
-                    editTextMUE.setVisibility(View.GONE);
-                    editTextMUE.setText("");
-                    //eingabefeld schließen
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
-                    return true;
+                    if (note != null && !(note.equals(""))) {
+                        NotenEntry notenEntry = new NotenEntry(new Integer(note));
+                        notenInDatenbankSchreibenMUE(notenEntry);
+                        arrayAdapterMUE.add(notenEntry);
+                        arrayAdapterMUE.notifyDataSetChanged();
+                        lv_MUENoten.setVisibility(View.VISIBLE);
+                        editTextMUE.setVisibility(View.GONE);
+                        editTextMUE.setText("");
+                        //eingabefeld schließen
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(), 0, 0);
+                        return true;
+                    }
                 }
                 return false;
             }
         });
-
 
         // Noten löschen
         lv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
