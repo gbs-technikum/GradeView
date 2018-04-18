@@ -22,10 +22,10 @@ import java.util.List;
 public class FachActivity extends AppCompatActivity {
 
     private static String fachname;
-    private Button buttonSAplus, buttonKAplus, buttonMUEplus;
+//    private Button buttonSAplus, buttonKAplus, buttonMUEplus;
     private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
-    private ListView lv_SANoten, lv_KANoten, lv_MUENoten, lv_Test;
+    private ListView lv_SANoten, lv_KANoten, lv_MUENoten, lv_Schulaufgabe, lv_Kurzarbeit, lv_Muendlich;
     private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
     private FachActivityAdapter fachActivityAdapter;
 
@@ -38,9 +38,9 @@ public class FachActivity extends AppCompatActivity {
         setTitle(fachname);
         fachDBHelper = new FachDBHelper(getBaseContext());
 
-        buttonSAplus = findViewById(R.id.btnSAplus);
-        buttonKAplus = findViewById(R.id.btnKAplus);
-        buttonMUEplus = findViewById(R.id.btnMUEplus);
+//        buttonSAplus = findViewById(R.id.btnSAplus);
+//        buttonKAplus = findViewById(R.id.btnKAplus);
+//        buttonMUEplus = findViewById(R.id.btnMUEplus);
 
         editTextSA = findViewById(R.id.editTextSA);
         editTextKA = findViewById(R.id.editTextKA);
@@ -50,10 +50,22 @@ public class FachActivity extends AppCompatActivity {
         lv_KANoten = findViewById(R.id.lv_KANoten);
         lv_MUENoten = findViewById(R.id.lv_MUENoten);
 
-        lv_Test = findViewById(R.id.lv_Test);
-        fachActivityAdapter = new FachActivityAdapter(this, "Schulaufgabe");
-        lv_Test.setAdapter(fachActivityAdapter);
+        lv_Schulaufgabe = findViewById(R.id.lv_Schulaufgabe);
+        fachActivityAdapter = new FachActivityAdapter(this, "Schulaufgabe", editTextSA);
+        lv_Schulaufgabe.setAdapter(fachActivityAdapter);
         fachActivityAdapter.notifyDataSetChanged();
+
+        lv_Kurzarbeit = findViewById(R.id.lv_Kurzarbeit);
+        fachActivityAdapter = new FachActivityAdapter(this, "Kurzarbeit", editTextKA);
+        lv_Kurzarbeit.setAdapter(fachActivityAdapter);
+        fachActivityAdapter.notifyDataSetChanged();
+
+        lv_Muendlich = findViewById(R.id.lv_Muendlich);
+        fachActivityAdapter = new FachActivityAdapter(this, "Mündlich", editTextMUE);
+        lv_Muendlich.setAdapter(fachActivityAdapter);
+        fachActivityAdapter.notifyDataSetChanged();
+
+
 
 
 
@@ -92,36 +104,36 @@ public class FachActivity extends AppCompatActivity {
         lv_MUENoten.setVisibility(View.VISIBLE);
 
 
-        buttonSAplus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editTextSA.setVisibility(View.VISIBLE);
-                //eigabefeld öffnen
-                editTextSA.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(editTextSA, 0);
-            }
-        });
+//        buttonSAplus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                editTextSA.setVisibility(View.VISIBLE);
+//                //eigabefeld öffnen
+//                editTextSA.requestFocus();
+//                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputMethodManager.showSoftInput(editTextSA, 0);
+//            }
+//        });
 
-        buttonKAplus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextKA.setVisibility(View.VISIBLE);
-                editTextKA.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(editTextKA, 0);
-            }
-        });
+//        buttonKAplus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editTextKA.setVisibility(View.VISIBLE);
+//                editTextKA.requestFocus();
+//                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputMethodManager.showSoftInput(editTextKA, 0);
+//            }
+//        });
 
-        buttonMUEplus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextMUE.setVisibility(View.VISIBLE);
-                editTextMUE.requestFocus();
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(editTextMUE, 0);
-            }
-        });
+//        buttonMUEplus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editTextMUE.setVisibility(View.VISIBLE);
+//                editTextMUE.requestFocus();
+//                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputMethodManager.showSoftInput(editTextMUE, 0);
+//            }
+//        });
 
         editTextSA.setOnKeyListener(new View.OnKeyListener() {
             @Override
