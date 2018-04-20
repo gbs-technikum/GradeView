@@ -83,6 +83,8 @@ public class FaecherAuswahl extends AppCompatActivity {
                     fachDBHelper.schreibRechteDatenbank();
                     fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
                     ausgewaehlteFaecher.add(faecherEntry.getFach());
+                    SQLiteDatabase sqLiteDatabase = fachDBHelper.getWritableDatabase();
+                    fachDBHelper.createTable(sqLiteDatabase, faecherEntry.getFach());
                 }
                 else{
                     view.setBackgroundColor(Color.WHITE);
@@ -91,6 +93,7 @@ public class FaecherAuswahl extends AppCompatActivity {
                     fachDBHelper.schreibRechteDatenbank();
                     fachDBHelper.updateFaecherlisteEintragAusgewaehlt(faecherEntry);
                     ausgewaehlteFaecher.remove(faecherEntry.getFach());
+                    fachDBHelper.deleteFach(faecherEntry.getFach());
                 }
 
 
@@ -196,7 +199,7 @@ public class FaecherAuswahl extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.fertig:
-                faecherAlsTabelleInDatenbankSchreiben();
+//                faecherAlsTabelleInDatenbankSchreiben();
                 finish();
                 return true;
         }
