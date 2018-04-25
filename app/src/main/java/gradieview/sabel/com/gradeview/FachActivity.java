@@ -135,6 +135,33 @@ public class FachActivity extends AppCompatActivity {
 //            }
 //        });
 
+        editTextSA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    editTextSA.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        editTextKA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    editTextKA.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        editTextMUE.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    editTextMUE.setVisibility(View.GONE);
+                }
+            }
+        });
+
         editTextSA.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {

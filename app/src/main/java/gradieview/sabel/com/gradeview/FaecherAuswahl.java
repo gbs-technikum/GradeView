@@ -87,7 +87,7 @@ public class FaecherAuswahl extends AppCompatActivity {
                     fachDBHelper.createTable(sqLiteDatabase, faecherEntry.getFach());
                 }
                 else{
-                    view.setBackgroundColor(Color.WHITE);
+                    view.setBackgroundColor(0xFFCC66);
                     faecherEntry.setAusgewaehlt(FaecherEntry.FALSE);
                     arrayAdapter.notifyDataSetChanged();
                     fachDBHelper.schreibRechteDatenbank();
