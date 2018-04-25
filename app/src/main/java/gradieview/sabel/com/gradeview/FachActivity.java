@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class FachActivity extends AppCompatActivity {
     private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
     private ListView lv_SANoten, lv_KANoten, lv_MUENoten, lv_Schulaufgabe, lv_Kurzarbeit, lv_Muendlich;
+   // private GridView lv_SANoten;
     private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
     private FachActivityAdapter fachActivityAdapter;
 
