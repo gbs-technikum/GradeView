@@ -20,13 +20,13 @@
 
     <TextView
         android:id="@+id/tv_durchschnittsnote"
-        android:layout_width="30dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="left"
         android:layout_toLeftOf="@id/tv_gesamtnote"
         android:layout_marginRight="20dp"
         android:maxLines="1"
-        android:textSize="15dp"
+        android:textSize="20dp"
         />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_alignParentRight="true"
-        android:textSize="15dp"
+        android:textSize="20dp"
         />
 
 </RelativeLayout>
