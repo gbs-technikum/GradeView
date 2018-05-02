@@ -56,7 +56,7 @@ public class NotenAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(context, R.layout.textview, null);
         TextView textView = v.findViewById(R.id.textView);
-        textView.setLayoutParams(new GridView.LayoutParams(180, 180));
+        textView.setLayoutParams(new GridView.LayoutParams(150, 150));
         textView.setText(String.valueOf(notenEntries.get(i).getNote()));
 
         textView.setBackgroundResource(R.layout.gridview_border);
