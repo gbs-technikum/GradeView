@@ -161,7 +161,7 @@
         android:layout_height="wrap_content">
 
         <GridView
-            android:id="@+id/lv_SANoten"
+            android:id="@+id/gv_SANoten"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -171,11 +171,7 @@
             android:horizontalSpacing="5dp"
             android:numColumns="5"
             android:stretchMode="columnWidth"
-
-
-            android:verticalSpacing="5dp"
-
-            />
+            android:verticalSpacing="5dp"/>
         <!--<ListView-->
         <!--android:id="@+id/lv_SANoten"-->
         <!--android:layout_width="match_parent"-->
@@ -234,17 +230,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/lv_KANoten"
+        <GridView
+            android:id="@+id/gv_KANoten"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#FFCC66"
-            android:divider="#666666"
-            android:dividerHeight="10dp"
-            android:visibility="gone" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="5"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"/>
     </LinearLayout>
 
     <EditText
@@ -286,17 +283,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/lv_MUENoten"
+        <GridView
+            android:id="@+id/gv_MUENoten"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#FFCC66"
-            android:divider="#666666"
-            android:dividerHeight="10dp"
-            android:visibility="gone" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:horizontalSpacing="5dp"
+            android:numColumns="5"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp"/>
     </LinearLayout>
 
     <EditText

@@ -25,11 +25,11 @@ public class FachActivity extends AppCompatActivity {
     //    private Button buttonSAplus, buttonKAplus, buttonMUEplus;
     private EditText editTextSA, editTextKA, editTextMUE;
     private FachDBHelper fachDBHelper;
-    private ListView gv_KANoten, gv_MUENoten, lv_Schulaufgabe, lv_Kurzarbeit, lv_Muendlich;
-    private GridView gv_SANoten;
+    private ListView lv_Schulaufgabe, lv_Kurzarbeit, lv_Muendlich;
+    private GridView gv_SANoten, gv_KANoten, gv_MUENoten;
     private ArrayAdapter<NotenEntry> arrayAdapterSA, arrayAdapterKA, arrayAdapterMUE;
     private FachActivityAdapter fachActivityAdapter;
-    private NotenAdapter notenAdapter;
+    private NotenAdapter notenAdapterSA, notenAdapterKA, notenAdapterMUE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,9 @@ public class FachActivity extends AppCompatActivity {
         editTextKA = findViewById(R.id.editTextKA);
         editTextMUE = findViewById(R.id.editTextMUE);
 
-        gv_SANoten = findViewById(R.id.lv_SANoten);
-        gv_KANoten = findViewById(R.id.lv_KANoten);
-        gv_MUENoten = findViewById(R.id.lv_MUENoten);
+        gv_SANoten = findViewById(R.id.gv_SANoten);
+        gv_KANoten = findViewById(R.id.gv_KANoten);
+        gv_MUENoten = findViewById(R.id.gv_MUENoten);
 
         lv_Schulaufgabe = findViewById(R.id.lv_Schulaufgabe);
         fachActivityAdapter = new FachActivityAdapter(this, "Schulaufgabe", editTextSA);
@@ -69,39 +69,41 @@ public class FachActivity extends AppCompatActivity {
 
 
         List<NotenEntry> listSA = notenAusDatenbankLesen();
-        if (notenAdapter == null && listSA != null) {
-            notenAdapter = new NotenAdapter(this, listSA);
+        if (notenAdapterSA == null && listSA != null) {
+            notenAdapterSA = new NotenAdapter(this, listSA);
 
         }
         gv_SANoten.setVisibility(View.VISIBLE);
 
         List<NotenEntry> listKA = notenAusDatenbankLesenKA();
-        if (listKA != null) {
-            for (NotenEntry notenEntry : listKA) {
-                arrayAdapterKA.add(notenEntry);
-            }
+        if (notenAdapterKA == null && listSA != null) {
+            notenAdapterKA = new NotenAdapter(this, listKA);
         }
         gv_KANoten.setVisibility(View.VISIBLE);
 
         List<NotenEntry> listMUE = notenAusDatenbankLesenMUE();
-        if (listKA != null) {
-            for (NotenEntry notenEntry : listMUE) {
-                arrayAdapterMUE.add(notenEntry);
-            }
+        if (notenAdapterMUE == null && listSA != null) {
+            notenAdapterMUE = new NotenAdapter(this, listMUE);
         }
         gv_MUENoten.setVisibility(View.VISIBLE);
 
-        if (listSA != null && notenAdapter != null) {
-            notenAdapter = new NotenAdapter(FachActivity.this, listSA);
+        if (listSA != null && notenAdapterSA != null) {
+            notenAdapterSA = new NotenAdapter(FachActivity.this, listSA);
+        }
+        if (listKA != null && notenAdapterKA != null) {
+            notenAdapterKA = new NotenAdapter(FachActivity.this, listKA);
+        }
+        if (listMUE != null && notenAdapterMUE != null) {
+            notenAdapterMUE = new NotenAdapter(FachActivity.this, listMUE);
         }
 //        arrayAdapterSA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        arrayAdapterKA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        arrayAdapterMUE = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+//        arrayAdapterKA = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+//        arrayAdapterMUE = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
 
-        gv_SANoten.setAdapter(notenAdapter);
-        gv_KANoten.setAdapter(arrayAdapterKA);
-        gv_MUENoten.setAdapter(arrayAdapterMUE);
+        gv_SANoten.setAdapter(notenAdapterSA);
+        gv_KANoten.setAdapter(notenAdapterKA);
+        gv_MUENoten.setAdapter(notenAdapterMUE);
 
 
 //        buttonSAplus.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +137,9 @@ public class FachActivity extends AppCompatActivity {
 //            }
 //        });
 
-        editTextSA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTextSA.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+        {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -144,7 +148,9 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        editTextKA.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTextKA.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+        {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -153,7 +159,9 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        editTextMUE.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editTextMUE.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+        {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -162,7 +170,9 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        editTextSA.setOnKeyListener(new View.OnKeyListener() {
+        editTextSA.setOnKeyListener(new View.OnKeyListener()
+
+        {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
@@ -170,16 +180,11 @@ public class FachActivity extends AppCompatActivity {
                     if (note != null && !(note.equals(""))) {
                         NotenEntry notenEntry = new NotenEntry(new Integer(note));
                         notenInDatenbankSchreiben(notenEntry);
-
-                        notenAdapter = new NotenAdapter(FachActivity.this, notenAusDatenbankLesen());
-                        System.out.println(notenAusDatenbankLesen());
-
-//                        notenAdapter.addItem(notenEntry);
-
+                        notenAdapterSA = new NotenAdapter(FachActivity.this, notenAusDatenbankLesen());
 //                        arrayAdapterSA.add(notenEntry);
 //                        arrayAdapterSA.notifyDataSetChanged();
-                        notenAdapter.notifyDataSetChanged();
-                        gv_SANoten.setAdapter(notenAdapter);
+                        notenAdapterSA.notifyDataSetChanged();
+                        gv_SANoten.setAdapter(notenAdapterSA);
                         gv_SANoten.setVisibility(View.VISIBLE);
                         editTextSA.setVisibility(View.GONE);
                         editTextSA.setText("");
@@ -193,7 +198,9 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        editTextKA.setOnKeyListener(new View.OnKeyListener() {
+        editTextKA.setOnKeyListener(new View.OnKeyListener()
+
+        {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
@@ -201,8 +208,11 @@ public class FachActivity extends AppCompatActivity {
                     if (note != null && !(note.equals(""))) {
                         NotenEntry notenEntry = new NotenEntry(new Integer(note));
                         notenInDatenbankSchreibenKA(notenEntry);
-                        arrayAdapterKA.add(notenEntry);
-                        arrayAdapterKA.notifyDataSetChanged();
+                        notenAdapterKA = new NotenAdapter(FachActivity.this, notenAusDatenbankLesenKA());
+//                        arrayAdapterKA.add(notenEntry);
+//                        arrayAdapterKA.notifyDataSetChanged();
+                        notenAdapterKA.notifyDataSetChanged();
+                        gv_KANoten.setAdapter(notenAdapterKA);
                         gv_KANoten.setVisibility(View.VISIBLE);
                         editTextKA.setVisibility(View.GONE);
                         editTextKA.setText("");
@@ -216,7 +226,9 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        editTextMUE.setOnKeyListener(new View.OnKeyListener() {
+        editTextMUE.setOnKeyListener(new View.OnKeyListener()
+
+        {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if (i == KeyEvent.KEYCODE_ENTER) {
@@ -224,8 +236,11 @@ public class FachActivity extends AppCompatActivity {
                     if (note != null && !(note.equals(""))) {
                         NotenEntry notenEntry = new NotenEntry(new Integer(note));
                         notenInDatenbankSchreibenMUE(notenEntry);
-                        arrayAdapterMUE.add(notenEntry);
-                        arrayAdapterMUE.notifyDataSetChanged();
+                        notenAdapterMUE = new NotenAdapter(FachActivity.this, notenAusDatenbankLesenMUE());
+//                        arrayAdapterMUE.add(notenEntry);
+//                        arrayAdapterMUE.notifyDataSetChanged();
+                        notenAdapterMUE.notifyDataSetChanged();
+                        gv_MUENoten.setAdapter(notenAdapterMUE);
                         gv_MUENoten.setVisibility(View.VISIBLE);
                         editTextMUE.setVisibility(View.GONE);
                         editTextMUE.setText("");
@@ -240,13 +255,15 @@ public class FachActivity extends AppCompatActivity {
         });
 
         // Noten löschen
-        gv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gv_SANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+
+        {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //                NotenEntry notenEntry = arrayAdapterSA.getItem(position);
-                NotenEntry notenEntry = (NotenEntry) notenAdapter.getItem(position);
-                notenAdapter.removeItem(notenEntry);
-                notenAdapter.notifyDataSetChanged();
+                NotenEntry notenEntry = (NotenEntry) notenAdapterSA.getItem(position);
+                notenAdapterSA.removeItem(notenEntry);
+                notenAdapterSA.notifyDataSetChanged();
 //                arrayAdapterSA.remove(notenEntry);
 //                arrayAdapterSA.notifyDataSetChanged();
                 if (position >= 0) {
@@ -257,12 +274,14 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        gv_KANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gv_KANoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+
+        {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                NotenEntry notenEntry = arrayAdapterKA.getItem(position);
-                arrayAdapterKA.remove(notenEntry);
-                arrayAdapterKA.notifyDataSetChanged();
+                NotenEntry notenEntry =(NotenEntry)notenAdapterKA.getItem(position);
+                notenAdapterKA.removeItem(notenEntry);
+                notenAdapterKA.notifyDataSetChanged();
                 if (position >= 0) {
                     fachDBHelper.getWritableDatabase();
                     return fachDBHelper.deleteNote(fachname, notenEntry);
@@ -271,12 +290,14 @@ public class FachActivity extends AppCompatActivity {
             }
         });
 
-        gv_MUENoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gv_MUENoten.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+
+        {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                NotenEntry notenEntry = arrayAdapterMUE.getItem(position);
-                arrayAdapterMUE.remove(notenEntry);
-                arrayAdapterMUE.notifyDataSetChanged();
+                NotenEntry notenEntry = (NotenEntry) notenAdapterMUE.getItem(position);
+                notenAdapterMUE.removeItem(notenEntry);
+                notenAdapterMUE.notifyDataSetChanged();
                 if (position >= 0) {
                     fachDBHelper.getWritableDatabase();
                     return fachDBHelper.deleteNote(fachname, notenEntry);
