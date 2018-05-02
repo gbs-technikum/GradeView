@@ -51,24 +51,36 @@ public class FaecherListAdapter extends BaseAdapter {
         View v = View.inflate(context, R.layout.textview_noten, null);
         TextView tvFach = v.findViewById(R.id.tv_fach);
         TextView tvNote = v.findViewById(R.id.tv_durchschnittsnote);
+        TextView tvGesamtnote = v.findViewById(R.id.tv_gesamtnote);
         String fach = String.valueOf(getItem(i));
         FachDBHelper fachDBHelper = new FachDBHelper(context);
         fachDBHelper.leseRechtDatenbank();
         List<NotenEntry> notenEntries = fachDBHelper.readAllFromFach(fach);
-
+        String durchschnittsnote = "";
         double noten = 0;
         if (notenEntries != null && notenEntries.size() > 0) {
             for (int j = 0; j < notenEntries.size(); j++) {
                 noten += notenEntries.get(j).getNote();
             }
             noten /= notenEntries.size();
-            String durchschnittsnote = String.valueOf(noten);
+
+            durchschnittsnote = String.valueOf(noten);
             if (durchschnittsnote.length() > 3) {
                 durchschnittsnote = durchschnittsnote.substring(0, 4);
             }
             tvNote.setText(durchschnittsnote);
         }
-
+        String gesamtnote = "";
+        if (durchschnittsnote.length() == 3 && durchschnittsnote.endsWith("5")) {
+            gesamtnote = durchschnittsnote.substring(0, 1);
+        } else {
+            gesamtnote = String.valueOf(Math.round(noten)).substring(0, 1);
+        }
+        if (gesamtnote.equals("0")) {
+            tvGesamtnote.setText("");
+        } else {
+            tvGesamtnote.setText(gesamtnote);
+        }
         if (faecher != null && faecher.size() > 0) {
             tvFach.setText(faecher.get(i).getFach());
         }
