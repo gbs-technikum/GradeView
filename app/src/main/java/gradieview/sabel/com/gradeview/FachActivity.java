@@ -343,23 +343,23 @@ public class FachActivity extends AppCompatActivity {
         fachDBHelper.insertNotenMUE(fachname, notenEntry);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.fertig:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    // Menü hinzufügen in Leiste oben rechts
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menufaecher, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.fertig:
+//                finish();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    // Menü hinzufügen in Leiste oben rechts
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menufaecher, menu);
+//        return true;
+//    }
 
     public String getFachname() {
         return fachname;

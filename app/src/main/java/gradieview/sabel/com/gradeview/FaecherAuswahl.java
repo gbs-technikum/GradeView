@@ -187,24 +187,24 @@ public class FaecherAuswahl extends AppCompatActivity {
 
 
     // Menü hinzufügen in Leiste oben rechts
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menufaecher, menu);
-        return true;
-    }
-
-    // Menüpunkt Fertig Listener, Methode speichern()
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.fertig:
-//                faecherAlsTabelleInDatenbankSchreiben();
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menufaecher, menu);
+//        return true;
+//    }
+//
+//    // Menüpunkt Fertig Listener, Methode speichern()
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.fertig:
+////                faecherAlsTabelleInDatenbankSchreiben();
+//                finish();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void faecherAlsTabelleInDatenbankSchreiben() {
         SQLiteDatabase sqLiteDatabase = fachDBHelper.getWritableDatabase();
