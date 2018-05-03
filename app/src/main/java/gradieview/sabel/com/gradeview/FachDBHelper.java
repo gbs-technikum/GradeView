@@ -70,9 +70,9 @@ public class FachDBHelper extends SQLiteOpenHelper {
 
     public void createTable(SQLiteDatabase db, String tabellenname) {
         if (tabellenname != null && tabellenname.length()> 0) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS " +
+            db.execSQL("CREATE TABLE IF NOT EXISTS '" +
                     tabellenname
-                    + " (" +
+                    + "' (" +
                     FachContract.FachEntry._ID + " TEXT PRIMARY KEY, " +
                     FachContract.FachEntry.SCHULAUFGABE + " INTEGER, " +
                     FachContract.FachEntry.KURZARBEIT + " INTEGER, " +
@@ -84,20 +84,20 @@ public class FachDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(FachContract.FachEntry._ID, notenEntry.getId());
         values.put(FachContract.FachEntry.SCHULAUFGABE, notenEntry.getNote());
-        this.db.insert(fachname, null, values);
+        this.db.insert("'"+ fachname+ "'", null, values);
     }
     public void insertNotenKA(String fachname, NotenEntry notenEntry) {
         ContentValues values = new ContentValues();
         values.put(FachContract.FachEntry._ID, notenEntry.getId());
         values.put(FachContract.FachEntry.KURZARBEIT, notenEntry.getNote());
-        this.db.insert(fachname,null, values);
+        this.db.insert("'"+ fachname+ "'",null, values);
     }
 
     public void insertNotenMUE(String fachname, NotenEntry notenEntry) {
         ContentValues values = new ContentValues();
         values.put(FachContract.FachEntry._ID, notenEntry.getId());
         values.put(FachContract.FachEntry.MÜNDLICH, notenEntry.getNote());
-        this.db.insert(fachname,null, values);
+        this.db.insert("'"+ fachname+ "'",null, values);
     }
     public List<NotenEntry> readAllFromFach(String fachname) {
         List<NotenEntry> list = null;
@@ -108,7 +108,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 FachContract.FachEntry.MÜNDLICH
         };
         if (!fachname.equals("Faecherliste")) {
-            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            Cursor cursor = db.query("'"+ fachname+ "'", projection, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 list = new ArrayList<>();
                 while (cursor.moveToNext()) {
@@ -149,7 +149,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 FachContract.FachEntry.MÜNDLICH
         };
         if (!fachname.equals("Faecherliste")) {
-            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            Cursor cursor = db.query("'"+ fachname+ "'", projection, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 list = new ArrayList<>();
                 while (cursor.moveToNext()) {
@@ -177,7 +177,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 FachContract.FachEntry.MÜNDLICH
         };
         if (!fachname.equals("Faecherliste")) {
-            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            Cursor cursor = db.query("'"+ fachname+ "'", projection, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 list = new ArrayList<>();
                 while (cursor.moveToNext()) {
@@ -205,7 +205,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
                 FachContract.FachEntry.MÜNDLICH
         };
         if (!fachname.equals("Faecherliste")) {
-            Cursor cursor = db.query(fachname, projection, null, null, null, null, null);
+            Cursor cursor = db.query("'"+ fachname+ "'", projection, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 list = new ArrayList<>();
                 while (cursor.moveToNext()) {
@@ -235,7 +235,7 @@ public class FachDBHelper extends SQLiteOpenHelper {
 
     public boolean deleteFach(String fachname) {
         if (fachname != null) {
-            db.execSQL("DROP TABLE IF EXISTS " + fachname);
+            db.execSQL("DROP TABLE IF EXISTS " + "'"+ fachname+ "'");
             return true;
         }
         return false;
